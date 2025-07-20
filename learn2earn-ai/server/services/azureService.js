@@ -2,6 +2,7 @@
 import axios from 'axios';
 
 export default async function generateEducationalContent (topic) {
+  console.log("generateEducationalContent triggered : ", topic);
   const {
   AZURE_OPENAI_KEY,
   AZURE_OPENAI_ENDPOINT,
@@ -51,7 +52,7 @@ const endpoint = `${AZURE_OPENAI_ENDPOINT}openai/deployments/${AZURE_OPENAI_DEPL
     const response = await axios.post(endpoint, body, { headers });
     return {
       topic,
-      content: response.data.choices[0].message.content.trim(),
+      content: response.data.choices[0].message.content,
     };
   } catch (error) {
     console.error('❌ Azure OpenAI Error:', error?.response?.data || error.message);
