@@ -16,7 +16,7 @@ const handleContent = async (newTopic) => {
     setContent(null); // Clear previous content
 
     try{
-      const res = await fetch('http://localhost:4000/api/generate-content', {
+      const res = await fetch('${import.meta.env.VITE_API_URL}/api/generate-content', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic: newTopic }),

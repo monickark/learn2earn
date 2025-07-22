@@ -7,7 +7,11 @@ import generateContentRoute from './routes/generateContent.js';
 const app = express();
 dotenv.config();
 // ✅ Middleware
-app.use(cors());
+app.use(cors({
+  origin: 'https://learn2earn-ivory.vercel.app',  
+  methods: ['GET', 'POST'],
+  credentials: true
+}));
 app.use(express.json());
 
 
