@@ -9,17 +9,20 @@ export default function ContentForm({ onSubmit }) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mb-6">
+     <form
+      onSubmit={handleSubmit}
+      className="bg-white p-6 md:p-8 rounded-xl shadow-lg flex flex-col md:flex-row gap-4 items-center"
+    >
       <input
         type="text"
-        placeholder="Enter a topic (e.g. Blockchain)"
+        placeholder="Enter a topic (e.g., Blockchain)"
         value={topic}
         onChange={(e) => setTopic(e.target.value)}
-        className="w-full px-4 py-2 rounded border border-gray-300"
+        className="flex-1 w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
       />
       <button
         type="submit"
-        className="mt-4 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+        className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md transition-all"
       >
         Generate Content
       </button>

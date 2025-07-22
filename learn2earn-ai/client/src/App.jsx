@@ -18,26 +18,25 @@ export default function App() {
 
     const raw = data.content.content;
 
-      // Split the string into sections
-  const lessonMatch = raw.match(/Lesson:\s*([\s\S]*?)MCQs:/);
-  const mcqsMatch = raw.match(/MCQs:\s*([\s\S]*?)Flashcards:/);
-  const flashcardsMatch = raw.match(/Flashcards:\s*([\s\S]*)/);
-
-  const structuredContent = {
-    Lesson: lessonMatch ? lessonMatch[1].trim() : '',
-    MCQs: mcqsMatch ? mcqsMatch[1].trim() : '',
-    Flashcards: flashcardsMatch ? flashcardsMatch[1].trim() : '',
-  };
-
-
-    setContent(structuredContent);
+    setContent(raw);
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold text-center mb-6">Learn2Earn AI</h1>
-      <ContentForm onSubmit={handleContent} />
-      {content && <ContentDisplay content={content} />}
+       <div className="min-h-screen bg-gradient-to-br from-slate-100 to-indigo-100 text-gray-800">
+      <header className="py-8 shadow bg-white">
+        <h1 className="text-4xl font-bold text-center text-indigo-800">📚 Learn2Earn AI</h1>
+
+        <p className="text-center text-sm text-gray-600 mt-2">Generate educational content with a single prompt</p>
+      </header>
+
+      <main className="max-w-5xl mx-auto px-6 py-10 space-y-12">
+        <ContentForm onSubmit={handleContent} />
+        {content && <ContentDisplay content={content} />}
+      </main>
+
+      <footer className="mt-20 py-6 text-center text-xs text-gray-500">
+        © {new Date().getFullYear()} Learn2Earn AI · Built with ❤️
+      </footer>
     </div>
   );
 }

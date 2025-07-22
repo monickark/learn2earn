@@ -13,27 +13,31 @@ export default async function generateEducationalContent (topic) {
   const prompt = `
 Generate educational content for the topic: "${topic}"
 
-1. Write a short, engaging lesson (max 300 words).
-2. Create 3 multiple choice questions with 4 options each. Indicate the correct answer.
-3. Create 3 flashcards with a question and a short answer.
 
-Format:
-Lesson:
-...
+Return the output in the following JSON format:
+{
+  "Lesson": "Short, engaging lesson text (max 300 words)",
+  "MCQs": [
+    {
+      "question": "What is blockchain?",
+      "options": [
+        { "label": "A", "text": "A centralized ledger" },
+        { "label": "B", "text": "A decentralized ledger" },
+        { "label": "C", "text": "A type of cryptocurrency" },
+        { "label": "D", "text": "A database owned by one company" }
+      ],
+      "answer": "B"
+    }
+  ],
+  "Flashcards": [
+    {
+      "question": "What is blockchain?",
+      "answer": "A decentralized ledger technology"
+    }
+  ]
+}
 
-MCQs:
-1. Question?
-  A. Option 1
-  B. Option 2
-  C. Option 3
-  D. Option 4
-  Answer: B
-
-...
-
-Flashcards:
-1. Q: ...
-   A: ...
+Ensure the response is **valid JSON**, with no additional explanation or formatting.
 `;
 const endpoint = `${AZURE_OPENAI_ENDPOINT}openai/deployments/${AZURE_OPENAI_DEPLOYMENT_NAME}/chat/completions?api-version=${AZURE_OPENAI_API_VERSION}`;
  const headers = {
@@ -50,6 +54,7 @@ const endpoint = `${AZURE_OPENAI_ENDPOINT}openai/deployments/${AZURE_OPENAI_DEPL
   try {
 
     const response = await axios.post(endpoint, body, { headers });
+    console.log("backend data : " + response.data.choices[0].message.content);
     return {
       topic,
       content: response.data.choices[0].message.content,
