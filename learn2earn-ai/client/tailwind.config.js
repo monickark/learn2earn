@@ -7,5 +7,15 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  typography: (theme) => ({
+  invert: {
+    css: {
+      '--tw-prose-headings': theme('colors.indigo.200'),
+      '--tw-prose-body': theme('colors.indigo.100'),
+      '--tw-prose-bullets': theme('colors.indigo.300'),
+    },
+  },
+}),
+  plugins: [require('@tailwindcss/typography')],
+
 };

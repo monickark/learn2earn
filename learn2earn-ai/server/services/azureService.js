@@ -1,5 +1,7 @@
 // server/services/azureService.js
 import axios from 'axios';
+import fs from 'fs';
+import path from 'path';
 
 export default async function generateEducationalContent (topic) {
   console.log("generateEducationalContent triggered : ", topic);
@@ -10,57 +12,39 @@ export default async function generateEducationalContent (topic) {
   AZURE_OPENAI_API_VERSION
 } = process.env;
 
-  const prompt = `
-Generate educational content for the topic: "${topic}"
+  // Read prompt from file
+  const promptPath = path.join(process.cwd(), 'prompts', 'learn2earn_prompt.txt');
+  const basePrompt = fs.readFileSync(promptPath, 'utf-8');
 
+ // Insert topic into the placeholder if exists
+  const finalPrompt = basePrompt.replace('{{TOPIC}}', topic);
 
-Return the output in the following JSON format:
-{
-  "Lesson": "Short, engaging lesson text (max 300 words)",
-  "MCQs": [
-    {
-      "question": "What is blockchain?",
-      "options": [
-        { "label": "A", "text": "A centralized ledger" },
-        { "label": "B", "text": "A decentralized ledger" },
-        { "label": "C", "text": "A type of cryptocurrency" },
-        { "label": "D", "text": "A database owned by one company" }
-      ],
-      "answer": "B"
-    }
-  ],
-  "Flashcards": [
-    {
-      "question": "What is blockchain?",
-      "answer": "A decentralized ledger technology"
-    }
-  ]
-}
-
-Ensure the response is **valid JSON**, with no additional explanation or formatting.
-`;
-const endpoint = `${AZURE_OPENAI_ENDPOINT}openai/deployments/${AZURE_OPENAI_DEPLOYMENT_NAME}/chat/completions?api-version=${AZURE_OPENAI_API_VERSION}`;
- const headers = {
+  const endpoint = `${AZURE_OPENAI_ENDPOINT}openai/deployments/${AZURE_OPENAI_DEPLOYMENT_NAME}/chat/completions?api-version=${AZURE_OPENAI_API_VERSION}`;
+  const headers = {
     'Content-Type': 'application/json',
     'api-key': AZURE_OPENAI_KEY,
   };
 
   const body = {
-    messages: [{ role: 'user', content: prompt }],
+    messages: [{ role: 'user', content: finalPrompt }],
     temperature: 0.7,
-    max_tokens: 800,
+    max_tokens: 2000,
   };
-
   try {
+  
+  const response = await axios.post(endpoint, body, { headers });
+  const result = response.data.choices[0].message.content;
+  console.log("🔹 Raw AI Output:\n", result);
 
-    const response = await axios.post(endpoint, body, { headers });
-    console.log("backend data : " + response.data.choices[0].message.content);
-    return {
-      topic,
-      content: response.data.choices[0].message.content,
-    };
-  } catch (error) {
-    console.error('❌ Azure OpenAI Error:', error?.response?.data || error.message);
-    throw error;
-  }
+  const parsed = JSON.parse(result); // <--- likely to fail if response is not valid JSON
+
+  return {
+    topic,
+    content: parsed,
+  };
+} catch (error) {
+  console.error("❌ JSON Parsing Error:", error.message);
+  throw error;
+}
+
 }
