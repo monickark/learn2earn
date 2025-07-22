@@ -31,17 +31,19 @@ export default async function generateEducationalContent (topic) {
     max_tokens: 2000,
   };
   try {
+    const response = await axios.post(endpoint, body, { headers });
+    let parsed;
+    try {
+      parsed = JSON.parse(response.data.choices[0].message.content);
+      return {
+        topic,
+        content: parsed,
+      };
+    } catch (err) {
+      console.error("Invalid JSON:", response.data.choices[0].message.content);
+      throw new Error("Failed to parse OpenAI response");
+    }
   
-  const response = await axios.post(endpoint, body, { headers });
-  const result = response.data.choices[0].message.content;
-  console.log("🔹 Raw AI Output:\n", result);
-
-  const parsed = JSON.parse(result); // <--- likely to fail if response is not valid JSON
-
-  return {
-    topic,
-    content: parsed,
-  };
 } catch (error) {
   console.error("❌ JSON Parsing Error:", error.message);
   throw error;

@@ -6,31 +6,50 @@ import ContentDisplay from './components/ContentDisplay';
 export default function App() {
   const [content, setContent] = useState(null);
   const [topic, setTopic] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-const handleContent = async (topic) => {
-  const res = await fetch('http://localhost:4000/api/generate-content', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ topic }),
-  });
- // console.log("res : ", res);
-  const data = await res.json();
- // console.log("data : ", data);
+const handleContent = async (newTopic) => {
+  setLoading(true);
+    setError('');
+    setTopic(newTopic);
+    setContent(null); // Clear previous content
 
-  const raw = data.content.content; // ✅ Already parsed JSON object
+    try{
+      const res = await fetch('http://localhost:4000/api/generate-content', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ topic: newTopic }),
+      });
 
- // console.log("raw : ", raw);
-  const structuredContent = {
-    Level: raw.Level || '',
-    Tags: raw.Tags || [],
-    Source: raw.Source || '',
-    Lesson: raw.Lesson || '',
-    MCQs: raw.MCQs || '',
-    Flashcards: raw.Flashcards || '',
-    ReflectionPrompts: raw.ReflectionPrompts || [],
-  };
+      if (!res.ok) throw new Error('Failed to fetch content');
 
-  setContent(structuredContent);
+    // console.log("res : ", res);
+      const data = await res.json();
+    // console.log("data : ", data);
+
+      const raw = data?.content?.content; // ✅ Already parsed JSON object
+
+      if (!raw) throw new Error('Invalid response format');
+
+    // console.log("raw : ", raw);
+      const structuredContent = {
+        Level: raw.Level || '',
+        Tags: raw.Tags || [],
+        Source: raw.Source || '',
+        Lesson: raw.Lesson || '',
+        MCQs: raw.MCQs || '',
+        Flashcards: raw.Flashcards || '',
+        ReflectionPrompts: raw.ReflectionPrompts || [],
+      };
+
+      setContent(structuredContent);
+  } catch (err) {
+      console.error(err);
+      setError('Something went wrong while generating content.');
+    } finally {
+      setLoading(false);
+    }
 };
 
 
@@ -41,6 +60,10 @@ const handleContent = async (topic) => {
           Learn2Earn AI
         </h1>
         <ContentForm onSubmit={handleContent} />
+
+         {loading && <p className="text-center text-indigo-600 mt-6">Generating content...</p>}
+        {error && <p className="text-center text-red-600 mt-6">{error}</p>}
+
         {content && <ContentDisplay content={content} topic={topic} />}
       </div>
     </div>
