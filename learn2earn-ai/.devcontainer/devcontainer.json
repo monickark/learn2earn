@@ -1,0 +1,13 @@
+{
+  "name": "Learn2Earn Dev",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  "settings": {
+    "terminal.integrated.defaultProfile.linux": "bash"
+  },
+  "postCreateCommand": "cd client && npm install && cd ../server && npm install",
+  "forwardPorts": [3000, 4000],
+  "remoteUser": "vscode",
+  "workspaceFolder": "/workspace"
+}
