@@ -1,13 +1,16 @@
 {
-  "name": "Learn2Earn Dev",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "name": "Learn2Earn Fullstack",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "client",
+  "workspaceFolder": "/workspace",
   "settings": {
     "terminal.integrated.defaultProfile.linux": "bash"
   },
-  "postCreateCommand": "cd client && npm install && cd ../server && npm install",
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "ms-azuretools.vscode-docker"
+  ],
   "forwardPorts": [3000, 4000],
-  "remoteUser": "vscode",
-  "workspaceFolder": "/workspace"
+  "postCreateCommand": "npm install --prefix client && npm install --prefix server"
 }
