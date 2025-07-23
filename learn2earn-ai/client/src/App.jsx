@@ -3,11 +3,26 @@ import { useState } from 'react';
 import ContentForm from './components/ContentForm';
 import ContentDisplay from './components/ContentDisplay';
 
+// Add after <ContentForm /> or anywhere visible:
+<SupabaseTest />
+
 export default function App() {
   const [content, setContent] = useState(null);
   const [topic, setTopic] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    fetchData()
+  }, [])
+
+  const fetchData = async () => {
+    const { data, error } = await supabase.from('search_logs').select('*')
+    if (error) console.error('Error:', error)
+    else setData(data)
+  }
+
 
 const handleContent = async (newTopic) => {
   setLoading(true);
@@ -60,7 +75,10 @@ const handleContent = async (newTopic) => {
           Learn2Earn AI
         </h1>
         <ContentForm onSubmit={handleContent} />
-
+          <div>
+            <h1>Test Supabase Integration</h1>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
+        </div>
          {loading && <p className="text-center text-indigo-600 mt-6">Generating content...</p>}
         {error && <p className="text-center text-red-600 mt-6">{error}</p>}
 
