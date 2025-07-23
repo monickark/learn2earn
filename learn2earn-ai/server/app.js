@@ -8,7 +8,7 @@ const app = express();
 dotenv.config();
 // ✅ Middleware
 app.use(cors({
-  origin: 'https://learn2earn-ivory.vercel.app',  
+  origin: 'https://VidGenz-ivory.vercel.app',  
   methods: ['GET', 'POST'],
   credentials: true
 }));

@@ -5,7 +5,7 @@ Your task is to generate high-quality, structured educational content for a cour
 
 Topic: "{{TOPIC}}"
 
-This content will be used in an AI-powered Learn2Earn platform where learners consume engaging educational material, take quizzes, and earn rewards. Your output should be clear, informative, beginner-friendly, and formatted strictly in valid JSON so it can be directly consumed by a frontend application.
+This content will be used in an AI-powered VidGenz platform where learners consume engaging educational material, take quizzes, and earn rewards. Your output should be clear, informative, beginner-friendly, and formatted strictly in valid JSON so it can be directly consumed by a frontend application.
 
 ### 📘 Output Requirements
 

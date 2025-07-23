@@ -1,5 +1,5 @@
 {
-  "name": "Learn2Earn Fullstack",
+  "name": "VidGenz Fullstack",
   "dockerComposeFile": "docker-compose.yml",
   "service": "client",
   "workspaceFolder": "/workspace",

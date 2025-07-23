@@ -13,7 +13,7 @@ export default async function generateEducationalContent (topic) {
 } = process.env;
 
   // Read prompt from file
-  const promptPath = path.join(process.cwd(), 'prompts', 'learn2earn_prompt.txt');
+  const promptPath = path.join(process.cwd(), 'prompts', 'VidGenz_prompt.txt');
   const basePrompt = fs.readFileSync(promptPath, 'utf-8');
 
  // Insert topic into the placeholder if exists

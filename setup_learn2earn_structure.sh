@@ -1,8 +1,8 @@
 #!/bin/bash
 
-PROJECT_ROOT="learn2earn-ai"
+PROJECT_ROOT="VidGenz-ai"
 
-echo "📁 Creating Learn2Earn AI folder structure..."
+echo "📁 Creating VidGenz AI folder structure..."
 
 mkdir -p $PROJECT_ROOT
 cd $PROJECT_ROOT || exit

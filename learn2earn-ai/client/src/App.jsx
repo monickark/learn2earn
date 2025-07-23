@@ -57,7 +57,7 @@ const handleContent = async (newTopic) => {
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl font-extrabold text-center text-indigo-800 mb-8">
-          Learn2Earn AI
+          VidGenz AI
         </h1>
         <ContentForm onSubmit={handleContent} />
 
