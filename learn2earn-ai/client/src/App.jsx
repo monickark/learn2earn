@@ -9,17 +9,16 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-const handleContent = async (newTopic) => {
+const handleContent = async (newTopic, newLevel) => {
   setLoading(true);
     setError('');
-    setTopic(newTopic);
     setContent(null); // Clear previous content
 
     try{
       const res = await fetch(`${import.meta.env.VITE_API_URL}/api/generate-content`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ topic: newTopic }),
+        body: JSON.stringify({ topic: newTopic , level: newLevel}),
       });
 
       if (!res.ok) throw new Error('Failed to fetch content');
@@ -42,7 +41,7 @@ const handleContent = async (newTopic) => {
         Flashcards: raw.Flashcards || '',
         ReflectionPrompts: raw.ReflectionPrompts || [],
       };
-
+      setTopic(topic);
       setContent(structuredContent);
   } catch (err) {
       console.error(err);

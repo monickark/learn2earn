@@ -72,28 +72,32 @@ export default function ContentDisplay({ content }) {
           <div key={i} className="mb-6 p-4 bg-gray-800 rounded-xl">
             <div className="font-medium mb-2">{i + 1}. {mcq.question}</div>
             <div className="space-y-2">
-              {mcq.options.map((opt) => (
-                <label
-                  key={opt.label}
-                  className={`block cursor-pointer p-2 rounded-md transition ${
-                    selectedAnswers[i]
-                      ? opt.label === mcq.answer
-                        ? 'bg-green-500'
-                        : selectedAnswers[i] === opt.label
-                        ? 'bg-red-500'
-                        : 'bg-gray-700'
-                      : 'bg-gray-700 hover:bg-gray-600'
-                  }`}
-                >
-                  <input
-                    type="checkbox"
-                    disabled={!!selectedAnswers[i]}
-                    className="mr-2"
-                    onChange={() => handleSelect(i, opt.label, mcq.answer)}
-                  />
-                  {opt.label}. {opt.text}
-                </label>
-              ))}
+              {Array.isArray(mcq.options) ? (
+                mcq.options.map((opt) => (
+                  <label
+                    key={opt.label}
+                    className={`block cursor-pointer p-2 rounded-md transition ${
+                      selectedAnswers[i]
+                        ? opt.label === mcq.answer
+                          ? 'bg-green-500'
+                          : selectedAnswers[i] === opt.label
+                          ? 'bg-red-500'
+                          : 'bg-gray-700'
+                        : 'bg-gray-700 hover:bg-gray-600'
+                    }`}
+                  >
+                    <input
+                      type="checkbox"
+                      disabled={!!selectedAnswers[i]}
+                      className="mr-2"
+                      onChange={() => handleSelect(i, opt.label, mcq.answer)}
+                    />
+                    {opt.label}. {opt.text}
+                  </label>
+                ))
+              ) : (
+                <div className="text-red-400">⚠️ Invalid options format</div>
+              )}
             </div>
             {selectedAnswers[i] && (
               <div className="text-sm text-green-300 mt-2">
@@ -102,12 +106,13 @@ export default function ContentDisplay({ content }) {
             )}
           </div>
         ))}
-        <div className="text-lg text-rose-300 font-semibold mt-4">
-          Score: {score} / {mcqList.length}
-        </div>
-        <div className="text-sm text-rose-400">
-          Correct Answers Selected: {score}
-        </div>
+
+          <div className="text-lg text-rose-300 font-semibold mt-4">
+            Score: {score} / {mcqList.length}
+          </div>
+          <div className="text-sm text-rose-400">
+            Correct Answers Selected: {score}
+          </div>
       </div>
       )}
 

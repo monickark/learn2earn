@@ -7,13 +7,12 @@ import generateContentRoute from './routes/generateContent.js';
 const app = express();
 dotenv.config();
 // ✅ Middleware
-// app.use(cors({
-//   origin: 'https://learn2earn-ivory.vercel.app','https://www.vidgenz.com/,  
-//   methods: ['GET', 'POST'],
-//   credentials: true
-// }));
+const allowedOrigins = [
+  'http://localhost:5173',
+  'https://www.vidgenz.com',
+  'https://learn2earn-ivory.vercel.app'
+];
 
-const allowedOrigins = ['http://localhost:3000', 'https://www.vidgenz.com', 'https://learn2earn-ivory.vercel.app'];
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -23,10 +22,9 @@ app.use(
         callback(new Error('Not allowed by CORS'));
       }
     },
-    credentials: true,
-  })
-);
-
+  methods: ['GET', 'POST', 'OPTIONS'],
+  credentials: true
+}));
 app.use(express.json());
 
 
