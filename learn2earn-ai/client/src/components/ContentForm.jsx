@@ -19,13 +19,13 @@ export default function ContentForm({ onSubmit }) {
         placeholder="Enter a topic (e.g., Blockchain)"
         value={topic}
         onChange={(e) => setTopic(e.target.value)}
-        className="flex-1 w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="flex-1 w-full px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 topic-input"
       />
 
       <select
         value={level}
         onChange={(e) => setLevel(e.target.value)}
-        className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 level-input"
       >
         <option value="Beginner">Beginner</option>
         <option value="Intermediate">Intermediate</option>
@@ -34,7 +34,7 @@ export default function ContentForm({ onSubmit }) {
       
       <button
         type="submit"
-        className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md transition-all"
+        className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md transition-all generate-btn"
       >
         Generate Content
       </button>
