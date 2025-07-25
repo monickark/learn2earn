@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import generateContentRoute from './routes/generateContent.js';
+import trendingTopics from './routes/trendingTopics.js';
 
 const app = express();
 dotenv.config();
@@ -30,7 +31,7 @@ app.use(express.json());
 
 // ✅ Routes
 app.use('/api/generate-content', generateContentRoute);
-
+app.use('/api/trending', trendingTopics);
 
 // ✅ Start server
 const PORT = process.env.PORT || 4000;

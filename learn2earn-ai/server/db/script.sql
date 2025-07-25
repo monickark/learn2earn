@@ -1,0 +1,10 @@
+create table search_logs (
+  id uuid default uuid_generate_v4() primary key,
+  topic text,
+  count int default 1,
+  inserted_at timestamp with time zone default timezone('utc'::text, now())
+);
+
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoYnN1YXN3cHhidm9weHp6Y3N4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxOTI1OTcsImV4cCI6MjA2ODc2ODU5N30.-N-TAMyFrIWzitUDZwlCs2TRKhzQmQ8OY4__xrFz3KE
+eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoYnN1YXN3cHhidm9weHp6Y3N4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzE5MjU5NywiZXhwIjoyMDY4NzY4NTk3fQ.Or_pZIP4xu0jBicU4G7u4YIzrRbhzIYDQI5JXpCoq80
+phbsuaswpxbvopxzzcsx
