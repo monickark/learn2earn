@@ -3,6 +3,7 @@ import Joyride from 'react-joyride';
 import { useEffect, useState } from 'react';
 import ContentForm from './components/ContentForm';
 import ContentDisplay from './components/ContentDisplay';
+import Walkthrough from './components/Walkthrough';
 
 export default function App() {
   const [showTour, setShowTour] = useState(false);  
@@ -18,25 +19,6 @@ export default function App() {
       localStorage.setItem('seenTour', 'true'); // Mark as seen
     }
   }, []);
-
-  const steps = [
-      {
-        target: '.topic-input', // class in ContentForm.jsx
-        content: 'Start by entering a topic you want to learn.',
-      }, 
-      {
-        target: '.level-input', // class in ContentForm.jsx
-        content: 'Choose your learning level here — Beginner, Intermediate, or Expert.',
-      },
-      {
-        target: '.generate-btn',
-        content: 'Click here to generate your personalized learning content.',
-      },
-      {
-        target: '.content-display',
-        content: 'Here you’ll see the lessons, quizzes, and flashcards.',
-      },
-    ];
 
 const handleContent = async (newTopic, newLevel) => {
   setLoading(true);
@@ -83,14 +65,7 @@ const handleContent = async (newTopic, newLevel) => {
 
   return (
     <>
-    <Joyride
-        steps={steps}
-        run={showTour}
-        showSkipButton
-        continuous
-        scrollToFirstStep
-        styles={{ options: { zIndex: 9999 } }}
-      />
+     <Walkthrough showTour={showTour} />
     <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-6">
       <div className="max-w-5xl mx-auto">
         <h1 className="text-4xl font-extrabold text-center text-indigo-800 mb-8">
