@@ -36,7 +36,7 @@ export default async function generateEducationalContent (topic, level) {
     const response = await axios.post(endpoint, body, { headers });
 
     const raw = response.data.choices?.[0]?.message?.content;
-    console.log("Raw OpenAI Response:\n", raw);
+   // console.log("Raw OpenAI Response:\n", raw);
 
     if (!raw) {
       throw new Error("Empty response from OpenAI");
@@ -46,8 +46,8 @@ export default async function generateEducationalContent (topic, level) {
     try {
       parsed = JSON.parse(raw);
     } catch (err) {
-      console.error("JSON Parsing Error:\n", err.message);
-      console.error("Failed content:\n", raw);
+     console.error("JSON Parsing Error:\n", err.message);
+     // console.error("Failed content:\n", raw);
       throw new Error("Failed to parse OpenAI response");
     }
       return {

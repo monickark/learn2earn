@@ -18,7 +18,7 @@ router.post('/', async (req, res) => {
     // 1. Generate AI content
     const aiResponse = await generateEducationalContent(topic, level);
     const content = formatResponse(aiResponse);
-
+    console.log("content generated")
     // 2. Update or insert into Supabase (atomic logic)
     const { error: upsertError } = await supabase
       .from('search_history')
@@ -29,25 +29,21 @@ router.post('/', async (req, res) => {
             count: 1,
             updated_at: new Date().toISOString()
           }
-        ],
-        {
-          onConflict: 'topic',
-          ignoreDuplicates: false
-        }
+        ]
       );
-
-    if (upsertError && upsertError.code !== '23505') {
-      console.error('Upsert error:', upsertError.message);
+      console.log("insert completed");
+    if (upsertError && upsertError.code == '23505') {
+      console.log('Upsert error:', upsertError.message);
     }
 
     // 3. If topic already existed, increment count via RPC
-    if (!upsertError) {
+    if (upsertError) {
       const { data, error: incrementError } = await supabase.rpc('increment_search_count', {
         search_topic: topic
       });
 
       if (incrementError) {
-        console.error('RPC increment error:', incrementError.message);
+        console.log('RPC increment error:', incrementError.message);
       }
     }
 
