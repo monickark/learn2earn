@@ -5,7 +5,13 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}", // ✅ Detects all your components in src
   ],
   theme: {
-    extend: {},
+    colors: {
+      primary: '#106EBE',
+      bright: '#00ABE4',
+      mint: '#0FFCBE',
+      lightblue: '#E9F1FA',
+      white: '#FFFFFF',
+    }
   },
   typography: (theme) => ({
   invert: {

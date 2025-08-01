@@ -5,6 +5,27 @@ create table search_logs (
   inserted_at timestamp with time zone default timezone('utc'::text, now())
 );
 
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoYnN1YXN3cHhidm9weHp6Y3N4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTMxOTI1OTcsImV4cCI6MjA2ODc2ODU5N30.-N-TAMyFrIWzitUDZwlCs2TRKhzQmQ8OY4__xrFz3KE
-eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBoYnN1YXN3cHhidm9weHp6Y3N4Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MzE5MjU5NywiZXhwIjoyMDY4NzY4NTk3fQ.Or_pZIP4xu0jBicU4G7u4YIzrRbhzIYDQI5JXpCoq80
-phbsuaswpxbvopxzzcsx
+create table public.users (
+  id uuid primary key references auth.users(id) on delete cascade,
+  username text unique,
+  full_name text,
+  profile_image text,
+  created_at timestamp with time zone default now()
+);
+
+alter table public.users enable row level security;
+
+create policy "Allow individual read access"
+  on public.users
+  for select
+  using (auth.uid() = id);
+
+create policy "Allow individual insert access"
+  on public.users
+  for insert
+  with check (auth.uid() = id);
+
+create policy "Allow individual update access"
+  on public.users
+  for update
+  using (auth.uid() = id);
