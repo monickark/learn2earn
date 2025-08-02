@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function ContentForm({ onSubmit, onSummarizeUrl, activeTab,
   setActiveTab }) {
@@ -21,30 +22,34 @@ export default function ContentForm({ onSubmit, onSummarizeUrl, activeTab,
   };
 
   return (
-    <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg space-y-6">
+    <div className="bg-white p-6 md:p-8 rounded-xl shadow-lg space-y-6"
+      initial={{ opacity: 0, y: 30 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      >
       {/* Tabs */}
-      <div className="flex space-x-4 border-b border-gray-200 mb-2">
-        <button
-          onClick={() => setActiveTab('topic')}
-          className={`pb-2 px-4 font-semibold ${
-            activeTab === 'topic'
-              ? 'border-b-4 border-indigo-600 text-indigo-700'
-              : 'text-gray-700 hover:text-indigo-600'
-          }`}
-        >
-          🎯 Topic-Based Generation
-        </button>
-        <button
-          onClick={() => setActiveTab('url')}
-          className={`pb-2 px-4 font-semibold ${
-            activeTab === 'url'
-              ? 'border-b-4 border-blue-600 text-blue-700'
-              : 'text-gray-700 hover:text-indigo-600'
-          }`}
-        >
-          🔗 URL Summarization
-        </button>
-      </div>
+     <div className="flex bg-white border border-gray-300 rounded-md overflow-hidden shadow-sm w-fit mx-auto">
+      <button
+        onClick={() => setActiveTab('topic')}
+        className={`px-5 py-2 font-medium transition-colors duration-200 focus:outline-none ${
+          activeTab === 'topic'
+            ? 'bg-indigo-600 text-white'
+            : 'text-gray-700 hover:bg-indigo-100'
+        }`}
+      >
+        🎯 Topic-Based
+      </button>
+      <button
+        onClick={() => setActiveTab('url')}
+        className={`px-5 py-2 font-medium transition-colors duration-200 focus:outline-none ${
+          activeTab === 'url'
+            ? 'bg-blue-600 text-white'
+            : 'text-gray-700 hover:bg-blue-100'
+        }`}
+      >
+        🔗 URL Summarization
+      </button>
+    </div>
 
       {/* Topic + Level Form */}
       {activeTab === 'topic' && (
@@ -72,9 +77,10 @@ export default function ContentForm({ onSubmit, onSummarizeUrl, activeTab,
 
           <button
             type="submit"
-            className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md transition-all generate-btn"
+            className="group bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-md transition-all generate-btn"
           >
-            Generate Content
+             <span className="group-hover:hidden">Craft My Lesson</span>
+              <span className="hidden group-hover:inline">Just takes a few seconds!</span>
           </button>
         </form>
       )}
@@ -94,9 +100,10 @@ export default function ContentForm({ onSubmit, onSummarizeUrl, activeTab,
           />
           <button
             type="submit"
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition-all"
+            className="group bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-md transition-all"
           >
-            Summarize URL
+             <span className="group-hover:hidden">Summarize URL</span>
+            <span className="hidden group-hover:inline">Summarize in a blink!</span>
           </button>
         </form>
       )}
