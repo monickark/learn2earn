@@ -129,10 +129,16 @@ const handleContent = async (newTopic, newLevel) => {
   return (
     <>
      <Walkthrough showTour={showTour} />
-    <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-6">
-        <h1 className="text-4xl font-extrabold text-center text-indigo-800 mb-8">
-          VidGenz AI
-        </h1>
+        <div className="min-h-screen bg-gradient-to-br from-[#e0ecf8] via-[#f0e7fc] to-[#fff1f6] p-6">
+          <div className="text-center mb-8">
+            <h3 className="text-4xl font-bold text-indigo-800 mb-3"> Bite-Sized Learning. Big Impact by{' '}
+              <span className="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">
+                 Vidgenz 
+              </span> AI.</h3>
+            <p className="text-lg text-gray-700">Got a few minutes? Drop a topic or URL and let AI teach you something new.</p>
+            <p className="mt-2 text-sm text-gray-500">No sign up required. Paste a topic or URL and get learning!</p>
+          </div>
+
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
          <div className="md:col-span-3">
         
