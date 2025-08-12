@@ -5,6 +5,7 @@ import cors from 'cors';
 import generateContentRoute from './routes/generateContent.js';
 import trendingTopics from './routes/trendingTopics.js';
 import summarizeUrlRoute from './routes/summarizeUrl.js';
+import summarizeArticleRoute from './routes/summarizeArticle.js';
 
 const app = express();
 dotenv.config();
@@ -34,6 +35,8 @@ app.use(express.json());
 app.use('/api/generate-content', generateContentRoute);
 app.use('/api/trending', trendingTopics);
 app.use('/api/summarize-url', summarizeUrlRoute);
+app.use('/api/summarize-article', summarizeArticleRoute);
+
 
 // ✅ Start server
 const PORT = process.env.PORT || 4000;
