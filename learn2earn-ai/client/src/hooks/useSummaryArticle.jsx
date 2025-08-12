@@ -3,12 +3,12 @@ import { useState } from 'react';
 
 export default function useSummarizeArticle() {
   const [summary, setArticleSummary] = useState(null);
-  const [articleLoading, setArticleLoading] = useState(true);
-  const [articleError, setArticleError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   const handleArticleSummary = async (textContent) => {
-    setArticleLoading(true);
-    setArticleError('');
+    setLoading(true);
+    setError('');
     setArticleSummary(null);
 
   let finalText = (textContent || '').trim(); // now guaranteed string
@@ -34,11 +34,11 @@ export default function useSummarizeArticle() {
       setArticleSummary(data.summary);
     } catch (err) {
       console.error(err);
-      setArticleError('Something went wrong while summarizing the article.');
+      setError('Something went wrong while summarizing the article.');
     } finally {
-      setArticleLoading(false);
+      setLoading(false);
     }
   };
 
-  return { summary, articleLoading, articleError, handleArticleSummary };
+  return { summary, loading, error, handleArticleSummary };
 }
