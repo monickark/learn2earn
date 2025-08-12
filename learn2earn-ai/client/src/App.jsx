@@ -58,7 +58,7 @@ export default function App() {
   }, []);
 
   const renderDisplay = () => {
-    console.log("active tab: ", activeTab); 
+    console.log("active tab: ", articleLoading); 
     if (activeTab === 'topic') {
       if (loadingTopic) return <p className="text-center text-indigo-600 mt-6">Generating content...</p>;
       if (errorTopic) return <p className="text-center text-red-600 mt-6">{errorTopic}</p>;
