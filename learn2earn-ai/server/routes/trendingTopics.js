@@ -10,9 +10,7 @@ router.get('/', async (req, res) => {
     .select('topic, count')
     .order('count', { ascending: false })
     .limit(10);
-  console.log("fetch complete");
   if (error) return res.status(500).json({ error });
-    console.log("data exist");
   res.json({ data });
 });
 

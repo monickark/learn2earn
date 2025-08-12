@@ -1,0 +1,21 @@
+System: You will only use the content provided below. Do NOT add external facts.
+User:
+Given the following ARTICLE_CONTENT, produce a JSON object with keys "Summary", "KeyPoints", and "WordCount". Output must be valid JSON only.
+
+ARTICLE_CONTENT:
+{{CONTENT}}
+
+Given the article text below, generate a concise summary and extract the key points in bullet format. Adjust the number of key points based on the article length:
+- For short articles (~<500 words), return at least 5 key points.
+- For medium articles (~500–1000 words), return 7–8 key points.
+- For long articles (>1000 words), return 10 key points.
+
+Respond strictly in this JSON format:
+{
+  "Summary": "Summarized text under 200 words.",
+  "KeyPoints": ["Point 1", "Point 2", ..., "Point N"],
+  "WordCount": {{WORD_COUNT}}
+}
+
+Make sure all points are clear, informative, and relevant.
+Do not add any commentary or extra text. Output only JSON.
