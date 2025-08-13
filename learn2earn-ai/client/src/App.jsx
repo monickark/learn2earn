@@ -76,14 +76,35 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="font-openSans">
       <Walkthrough showTour={showTour} />
       <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-6">
-        <h1 className="text-4xl font-extrabold text-center text-indigo-800 mb-2">
+        
+        {/* Hero Section with Animation */}
+        <style>{`
+          @keyframes fadeInUp {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+          }
+          .fade-in {
+            animation: fadeInUp 0.8s ease forwards;
+          }
+          .delay-0 { animation-delay: 0s; }
+          .delay-1 { animation-delay: 0.6s; }
+          .delay-2 { animation-delay: 1.2s; }
+        `}</style>
+
+        <h1 className="text-4xl font-extrabold text-center text-indigo-800 mb-2 opacity-0 fade-in delay-0">
           Learn Smarter. Powered by <span className="text-indigo-600">Vidgenz</span> AI.
         </h1>
-        <p className="text-center text-gray-600 mb-8">Got a few minutes? Let AI craft lessons, quizzes, and article summaries for you!</p>
-
+        <p className="text-center mb-2 opacity-0 fade-in delay-1">
+        <span className="inline-block px-4 py-1 rounded-full bg-gradient-to-r from-pink-500 to-yellow-500 text-white font-semibold shadow-lg animate-pulse">
+          🚀 No prompt engineering needed
+        </span>
+      </p>
+        <p className="text-center text-gray-600 mb-8 opacity-0 fade-in delay-2">
+          Turn any topic, URL, or article into ready-to-learn content instantly.
+        </p>
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-3">
             <ContentForm
@@ -103,6 +124,6 @@ export default function App() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }

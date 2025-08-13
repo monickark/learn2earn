@@ -5,7 +5,19 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}", // ✅ Detects all your components in src
   ],
   theme: {
-    extend: {},
+     extend: {keyframes: {
+        slideFade: {
+          '0%': { opacity: 0, transform: 'translateY(10px)' },
+          '100%': { opacity: 1, transform: 'translateY(0)' },
+        },
+      },
+      animation: {
+        slideFade: 'slideFade 0.4s ease-out',
+      },
+      fontFamily: {
+        openSans: ['Open Sans', 'sans-serif'],
+      },
+    },
   },
   typography: (theme) => ({
   invert: {
