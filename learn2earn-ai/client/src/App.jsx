@@ -76,7 +76,7 @@ export default function App() {
   };
 
   return (
-    <>
+    <div className="font-openSans">
       <Walkthrough showTour={showTour} />
       <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-100 p-6">
         
@@ -124,6 +124,6 @@ export default function App() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
