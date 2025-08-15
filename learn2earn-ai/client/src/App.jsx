@@ -6,11 +6,13 @@ import useSummarizeUrl from "./hooks/useSummarizeUrl";
 import useSummarizeArticle from "./hooks/useSummaryArticle";
 import Walkthrough from "./components/Walkthrough";
 import HeroSection from "./components/HeroSection";
+import HomeComponent from "./components/HomeComponent";
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState("topic");
+  const [activeTab, setActiveTab] = useState("home"); 
   const [showTour, setShowTour] = useState(false);
   const [trendingTopics, setTrendingTopics] = useState([]);
+  const [interviewStep, setInterviewStep] = useState(1); // ✅ track interview step
 
   const { content, topic, loading: loadingTopic, error: errorTopic, handleContent } =
     useGenerateContent();
@@ -38,27 +40,35 @@ export default function App() {
   return (
     <MainLayout activeTab={activeTab} setActiveTab={setActiveTab}>
       <Walkthrough showTour={showTour} />
-      <HeroSection activeTab={activeTab} />
+      {activeTab !== "home" && (
+        <HeroSection activeTab={activeTab} step={interviewStep} /> // ✅ pass step here
+      )}
 
       <div className="max-w-7xl mx-auto">
-        <MainContentRenderer
-          activeTab={activeTab}
-          content={content}
-          topic={topic}
-          loadingTopic={loadingTopic}
-          errorTopic={errorTopic}
-          handleContent={handleContent}
-          trendingTopics={trendingTopics}
-          urlSummary={urlSummary}
-          url={url}
-          loadingUrl={loadingUrl}
-          errorUrl={errorUrl}
-          handleUrlSummary={handleUrlSummary}
-          summary={summary}
-          articleLoading={articleLoading}
-          articleError={articleError}
-          handleArticleSummary={handleArticleSummary}
-        />
+        {activeTab === "home" && <HomeComponent setActiveTab={setActiveTab} />}
+
+        {activeTab !== "home" && (
+          <MainContentRenderer
+            activeTab={activeTab}
+            content={content}
+            topic={topic}
+            loadingTopic={loadingTopic}
+            errorTopic={errorTopic}
+            handleContent={handleContent}
+            trendingTopics={trendingTopics}
+            urlSummary={urlSummary}
+            url={url}
+            loadingUrl={loadingUrl}
+            errorUrl={errorUrl}
+            handleUrlSummary={handleUrlSummary}
+            summary={summary}
+            articleLoading={articleLoading}
+            articleError={articleError}
+            handleArticleSummary={handleArticleSummary}
+            interviewStep={interviewStep}            // ✅ send to MainContentRenderer
+            setInterviewStep={setInterviewStep}      // ✅ send setter too
+          />
+        )}
       </div>
     </MainLayout>
   );

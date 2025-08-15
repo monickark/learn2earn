@@ -5,7 +5,7 @@ import ArticleSummaryDisplay from "./ArticleSummaryDisplay";
 import TopicForm from "./forms/TopicForm";
 import UrlForm from "./forms/UrlForm";
 import ArticleForm from "./forms/ArticleForm";
-import InterviewLearning from "./InterviewLearning";
+import InterviewLearning from "./interview/InterviewLearning";
 import TrendingTopics from "./TrendingTopics";
 
 export default function MainContentRenderer({
@@ -25,6 +25,7 @@ export default function MainContentRenderer({
   articleLoading,
   articleError,
   handleArticleSummary,
+  setInterviewStep
 }) {
   if (activeTab === "topic") {
     return (
@@ -100,7 +101,7 @@ export default function MainContentRenderer({
   }
 
   if (activeTab === "interviewLearning") {
-    return <InterviewLearning />;
+    return <InterviewLearning setInterviewStep={setInterviewStep} />;
   }
 
   return null;

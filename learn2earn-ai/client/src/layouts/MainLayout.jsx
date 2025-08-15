@@ -4,7 +4,8 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
     <div className="flex font-openSans h-screen">
       {/* Sidebar */}
       <div className="bg-gradient-to-b from-indigo-900 to-indigo-700 bg-opacity-90 backdrop-blur-md text-white w-64 p-5 flex flex-col shadow-xl">
-        <div className="text-2xl font-extrabold mb-8 bg-gradient-to-r from-pink-400 to-yellow-300 text-transparent bg-clip-text">
+        <div className="text-2xl font-extrabold mb-8 bg-gradient-to-r from-pink-400 to-yellow-300 text-transparent bg-clip-text"
+        onClick={() => setActiveTab("home")}>
           Vidgenz
         </div>
 

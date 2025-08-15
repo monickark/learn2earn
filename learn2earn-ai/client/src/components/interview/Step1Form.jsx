@@ -1,7 +1,9 @@
-export default function InterviewLearningForm({ formData, setFormData, onSubmit, loading }) {
+// components/interview/Step1Form.jsx
+export default function Step1Form({ formData, setFormData, onSubmit, loading }) {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6">
+    <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
       <h2 className="text-xl font-bold text-indigo-700 mb-4">Interview Learning - Step 1</h2>
+
       <div className="space-y-4">
         <input
           type="text"

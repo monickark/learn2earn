@@ -1,5 +1,5 @@
 // src/components/HeroSection.jsx
-export default function HeroSection({ activeTab }) {
+export default function HeroSection({ activeTab, step }) {
   const heroContent = {
     topic: {
       title: "Discover & Learn Any Topic Instantly",
@@ -37,7 +37,12 @@ export default function HeroSection({ activeTab }) {
       description:
         "Generate custom learning paths, assess your skills, and prepare with mock interviews tailored to your role."
     }
-  };
+  };  
+console.log("HeroSection activeTab:", activeTab, "step:", step);
+  // Only show interview hero on Step 1
+  if (activeTab === "interviewLearning" && step !== 1) {
+    return null;
+  }
 
   const { title, badge, description } =
     heroContent[activeTab] || heroContent["topic"];

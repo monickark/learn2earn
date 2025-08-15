@@ -6,6 +6,8 @@ import generateContentRoute from './routes/generateContent.js';
 import trendingTopics from './routes/trendingTopics.js';
 import summarizeUrlRoute from './routes/summarizeUrl.js';
 import summarizeArticleRoute from './routes/summarizeArticle.js';
+import interviewRoutes from "./routes/generate-rounds.js"; //
+
 
 const app = express();
 dotenv.config();
@@ -36,7 +38,7 @@ app.use('/api/generate-content', generateContentRoute);
 app.use('/api/trending', trendingTopics);
 app.use('/api/summarize-url', summarizeUrlRoute);
 app.use('/api/summarize-article', summarizeArticleRoute);
-
+app.use("/api/interview", interviewRoutes);
 
 // ✅ Start server
 const PORT = process.env.PORT || 4000;
