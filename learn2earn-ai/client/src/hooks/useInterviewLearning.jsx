@@ -90,13 +90,13 @@ export default function useInterviewLearning() {
     }
   };
 
-  const fetchLearningContent = async () => {
+  const generateRoundContent = async () => {
     try {
       setLoading(true);
       setError("");
 
       const response = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/interview/fetch-learning-content`,
+        `${import.meta.env.VITE_API_URL}/api/generate-round-content`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -132,6 +132,6 @@ export default function useInterviewLearning() {
     loading,
     error,
     fetchInterviewRounds,
-    fetchLearningContent,
+    generateRoundContent,
   };
 }

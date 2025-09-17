@@ -1,7 +1,7 @@
 // server/routes/generateContent.js
 import express from 'express';
 const router = express.Router();
-import generateEducationalContent from '../services/azureService.js';
+import generateEducationalContent from '../services/generateRoundContentService.js';
 import formatResponse from '../utils/formatResponse.js';
 import validateInput from '../utils/validateInput.js';
 import supabase from '../utils/supabaseClient.js';

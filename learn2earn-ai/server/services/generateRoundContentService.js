@@ -3,8 +3,8 @@ import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 
-export default async function generateEducationalContent (topic, level) {
-  console.log("generateEducationalContent triggered : ", topic, level);
+export default async function generateRoundContentService (topic, level) {
+  console.log("generateRoundContentService triggered : ", topic, level);
   const {
   AZURE_OPENAI_KEY,
   AZURE_OPENAI_ENDPOINT,

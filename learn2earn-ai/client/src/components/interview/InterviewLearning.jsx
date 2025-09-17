@@ -18,7 +18,7 @@ export default function InterviewLearning({ setInterviewStep }) {
     loading,
     error,
     fetchInterviewRounds,
-    fetchLearningContent,
+    generateRoundContent,
     goBack,
     goNext
   } = useInterviewLearning();
@@ -61,7 +61,7 @@ export default function InterviewLearning({ setInterviewStep }) {
             rounds={Array.isArray(rounds) ? rounds : []}
             selectedRounds={selectedRounds}
             setSelectedRounds={setSelectedRounds}
-            onSubmit={fetchLearningContent} // hook moves to Step 3 on success
+            onSubmit={generateRoundContent} // hook moves to Step 3 on success
             loading={loading}
           />
           <StepNavigation
