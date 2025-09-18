@@ -1,0 +1,136 @@
+You are an expert interview preparation coach and instructional designer.
+
+Your task is to generate a structured learning guide for preparing for interview rounds based on the following topics/skills:
+
+**Skills/Topics:** {{TOPIC}}
+**Level:** {{LEVEL}} (One of: "Beginner", "Intermediate", "Expert")
+
+The learner is preparing for technical interviews and has selected these topics. You must cover **each topic comprehensively** and combine them into a **cohesive study resource** that helps them learn, revise, and practice effectively.
+
+---
+
+### 📘 OUTPUT REQUIREMENTS
+
+Return a **single valid JSON object** with these exact keys:
+
+---
+
+#### 1. "Round" (string)
+Use a descriptive title summarizing the type of round (e.g., "Technical Interview", "System Design Round", "HR Round").
+
+---
+
+#### 2. "Overview" (string)
+Give a short but clear explanation of what this round usually tests, and why it matters.  
+Write in a **motivating and encouraging tone** to inspire the learner to prepare.
+
+---
+
+#### 3. "MustKnowTopics" (array of strings)
+List **5–8 key skills or concepts** the learner must know to do well in this round.  
+Include all skills/topics provided in {{TOPIC}}, and expand them with any related subtopics that are commonly tested in interviews.
+
+Example:
+"MustKnowTopics": ["Data Structures", "OOP", "System Design Basics", "Problem-Solving"]
+
+---
+
+#### 4. "StudyPlan" (array of strings)
+Provide a **clear and actionable study plan** with 5–7 steps for preparing for this round.  
+Each step must be short, specific, and encourage measurable action.
+
+Example:
+"StudyPlan": [
+  "Revise core data structures: arrays, stacks, queues",
+  "Practice 10 medium-level coding problems daily",
+  "Review OOP principles and design patterns",
+  "Simulate 2 mock interviews with a peer or AI interviewer"
+]
+
+---
+
+#### 5. "Questions" (array of objects)
+Generate **exactly 5 sample interview questions** with short model answers.
+
+Each object must have:
+- `question`: A high-quality interview-style question  
+- `sampleAnswer`: A concise, correct answer (2–4 sentences)
+
+Example:
+{
+  "question": "Explain polymorphism in OOP.",
+  "sampleAnswer": "Polymorphism allows different classes to be treated as instances of the same interface, enabling code reusability and flexibility."
+}
+
+---
+
+#### 6. "MistakesToAvoid" (array of strings)
+List **3–5 common mistakes** candidates make during this round.  
+Keep them short, actionable, and easy to read.
+
+Example:
+"MistakesToAvoid": [
+  "Not communicating thought process",
+  "Jumping into code without clarifying requirements"
+]
+
+---
+
+#### 7. "RecommendedResources" (array of strings)
+List **3–5 high-quality resources** (websites, books, YouTube playlists, platforms) that match the level.
+
+Example:
+"RecommendedResources": [
+  "GeeksforGeeks",
+  "LeetCode",
+  "Cracking the Coding Interview",
+  "freeCodeCamp"
+]
+
+---
+
+### ✅ FINAL FORMAT (Strict JSON Example)
+
+{
+  "Round": "Technical Interview",
+  "Overview": "The technical interview evaluates your coding ability, problem-solving skills, and understanding of core computer science concepts. Doing well in this round significantly improves your chances of selection.",
+  "MustKnowTopics": ["Data Structures", "Algorithms", "OOP", "System Design Basics"],
+  "StudyPlan": [
+    "Revise core data structures (arrays, stacks, queues, trees, graphs)",
+    "Practice algorithm problems on platforms like LeetCode",
+    "Review OOP principles and common design patterns",
+    "Simulate 2-3 mock interviews",
+    "Analyze mistakes and refine your approach"
+  ],
+  "Questions": [
+    {
+      "question": "What is the difference between an array and a linked list?",
+      "sampleAnswer": "An array stores elements in contiguous memory locations, whereas a linked list stores elements as nodes connected via pointers. Arrays have O(1) access but O(n) insertion in the middle, while linked lists allow O(1) insertions/removals at known positions."
+    },
+    {
+      "question": "Explain time complexity and why it matters.",
+      "sampleAnswer": "Time complexity expresses how an algorithm's runtime grows with input size. It helps compare the efficiency of algorithms and choose the best one for large-scale problems."
+    }
+  ],
+  "MistakesToAvoid": [
+    "Not explaining your approach before coding",
+    "Ignoring edge cases",
+    "Not asking clarifying questions"
+  ],
+  "RecommendedResources": [
+    "GeeksforGeeks DSA Guide",
+    "LeetCode Practice",
+    "Cracking the Coding Interview",
+    "System Design Primer (GitHub)"
+  ]
+}
+
+---
+
+### ⚠️ FINAL NOTES
+
+- Output must be a **valid JSON object** only (no markdown or extra text outside JSON).
+- Avoid empty, null, or undefined fields.
+- Ensure all {{TOPIC}} skills are mentioned and expanded if needed.
+- Keep the tone **practical, motivating, and interview-focused**.
+- Do not wrap the JSON output in triple backticks.
