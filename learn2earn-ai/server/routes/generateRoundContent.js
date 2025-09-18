@@ -1,5 +1,5 @@
 import express from "express";
-import generateRoundContentService from "../services/generateRoundContentService.js";
+import generateRoundContentService from "../services/generateRoundContentService.js"; // ✅ uses the updated service
 
 const router = express.Router();
 
@@ -14,16 +14,34 @@ router.post("/", async (req, res) => {
       });
     }
 
-    // ✅ Support array of objects or strings
+    // ✅ Extract skills/topics from rounds
+    let skills = [];
     const normalizedRounds = rounds.map((r) => {
       if (typeof r === "string") return r;
-      if (r.roundName) return r.roundName;
-      return String(r); // fallback to string
+
+      // Collect topics if present
+      if (Array.isArray(r.topics)) {
+        skills.push(...r.topics);
+      }
+
+      return r.roundName || String(r);
     });
 
-    console.log("Normalized Rounds:", normalizedRounds);
+    // ✅ Deduplicate and trim skills
+    skills = [...new Set(skills.map((s) => s.trim()))];
 
-    const result = await generateRoundContentService(normalizedRounds, level);
+    console.log("Normalized Rounds:", normalizedRounds);
+    console.log("Extracted Skills:", skills);
+
+    if (skills.length === 0) {
+      return res.status(400).json({
+        status: "error",
+        message: "No topics/skills found in selected rounds",
+      });
+    }
+
+    // ✅ Pass extracted skills to service (not round names)
+    const result = await generateRoundContentService(skills, level);
 
     return res.status(200).json({
       status: "success",

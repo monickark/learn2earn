@@ -84,25 +84,30 @@ export default function MainContentRenderer({
     );
   }
 
-  if (activeTab === "video") {
-    return (
-      <p className="text-center text-gray-600 mt-6">
-        🎥 Video Summary form coming soon...
-      </p>
-    );
-  }
+  // if (activeTab === "video") {
+  //   return (
+  //     <p className="text-center text-gray-600 mt-6">
+  //       🎥 Video Summary form coming soon...
+  //     </p>
+  //   );
+  // }
 
-  if (activeTab === "audio") {
-    return (
-      <p className="text-center text-gray-600 mt-6">
-        🎧 Audio Summary form coming soon...
-      </p>
-    );
-  }
+  // if (activeTab === "audio") {
+  //   return (
+  //     <p className="text-center text-gray-600 mt-6">
+  //       🎧 Audio Summary form coming soon...
+  //     </p>
+  //   );
+  // }
 
   if (activeTab === "interviewLearning") {
     return <InterviewLearning setInterviewStep={setInterviewStep} />;
   }
+
+//   if (activeTab === "practice") {
+//   return <Practice />;
+// }
+
 
   return null;
 }

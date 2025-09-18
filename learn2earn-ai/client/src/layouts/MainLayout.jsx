@@ -1,15 +1,34 @@
 // src/layouts/MainLayout.jsx
+import HomeComponent from "../components/HomeComponent";
+
 export default function MainLayout({ activeTab, setActiveTab, children }) {
   return (
     <div className="flex font-openSans h-screen">
       {/* Sidebar */}
       <div className="bg-gradient-to-b from-indigo-900 to-indigo-700 bg-opacity-90 backdrop-blur-md text-white w-64 p-5 flex flex-col shadow-xl">
-        <div className="text-2xl font-extrabold mb-8 bg-gradient-to-r from-pink-400 to-yellow-300 text-transparent bg-clip-text"
-        onClick={() => setActiveTab("home")}>
+        {/* Logo */}
+        <div
+          className="text-2xl font-extrabold mb-8 bg-gradient-to-r from-pink-400 to-yellow-300 text-transparent bg-clip-text cursor-pointer"
+          onClick={() => setActiveTab("home")}
+        >
           Vidgenz
         </div>
 
+        {/* Navigation */}
         <nav className="flex-1 space-y-2">
+          {/* Home Button */}
+          <button
+            className={`w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-all duration-200 ${
+              activeTab === "home"
+                ? "bg-indigo-600 shadow-md"
+                : "hover:bg-indigo-500 hover:shadow-lg"
+            }`}
+            onClick={() => setActiveTab("home")}
+          >
+            <span>🏠</span>
+            <span className="font-medium">Home</span>
+          </button>
+
           {/* Topics */}
           <button
             className={`w-full text-left px-4 py-3 rounded-lg flex items-center space-x-3 transition-all duration-200 ${
@@ -31,8 +50,8 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
             {[
               { key: "url", label: "🔗 URL Summary" },
               { key: "article", label: "📰 Article Summary" },
-              { key: "video", label: "🎥 Video Summary" },
-              { key: "audio", label: "🎧 Audio Summary" },
+              // { key: "video", label: "🎥 Video Summary" },
+              // { key: "audio", label: "🎧 Audio Summary" },
             ].map(({ key, label }) => (
               <button
                 key={key}
@@ -63,6 +82,17 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
             >
               🎯 Learning
             </button>
+         
+            {/* <button
+              className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
+                activeTab === "practice"
+                  ? "bg-indigo-600 shadow-md"
+                  : "hover:bg-indigo-500 hover:shadow-lg"
+              }`}
+              onClick={() => setActiveTab("practice")}
+            >
+              🧑‍💻 Practice
+            </button> */}
           </div>
         </nav>
 
@@ -76,7 +106,11 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
 
       {/* Main Content */}
       <div className="flex-1 p-6 overflow-auto bg-gradient-to-br from-indigo-100 to-purple-100">
-        {children}
+        {activeTab === "home" ? (
+          <HomeComponent setActiveTab={setActiveTab} />
+        ) : (
+          children
+        )}
       </div>
     </div>
   );

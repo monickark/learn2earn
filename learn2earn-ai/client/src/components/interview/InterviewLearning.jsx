@@ -76,7 +76,11 @@ export default function InterviewLearning({ setInterviewStep }) {
 
       {step === 3 && (
         <>
-          <Step3LearningTabs learningContent={learningContent} />
+          <Step3LearningTabs 
+            formData={formData} 
+            selectedRounds={selectedRounds} 
+            learningContent={learningContent} 
+          />
           <StepNavigation
             step={step}
             totalSteps={3}

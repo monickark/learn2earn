@@ -4,11 +4,10 @@ import { useState, useEffect } from "react";
 export default function useInterviewLearning() {
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
-    jobTitle: "Software Engineer",
-    jobDescription:
-      "We are looking for a skilled engineer to work on scalable backend systems...",
-    yearsExperience: "3",
-    skills: "JavaScript, Node.js, React, SQL",
+    jobTitle: "",
+    jobDescription: "",
+    yearsExperience: "",
+    skills: "",
   });
   const [rounds, setRounds] = useState([]);
   const [selectedRounds, setSelectedRounds] = useState([]);
