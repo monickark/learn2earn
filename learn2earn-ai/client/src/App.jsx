@@ -7,7 +7,6 @@ import Walkthrough from "./components/Walkthrough";
 import HeroSection from "./components/HeroSection";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 import ErrorBoundary from "./components/common/ErrorBoundary";
-import PerformanceMonitor from "./components/common/PerformanceMonitor";
 
 // Lazy load components
 const MainContentRenderer = lazy(() => import("./components/MainContentRenderer"));
@@ -79,7 +78,6 @@ export default function App() {
           </Suspense>
         </div>
       </MainLayout>
-      <PerformanceMonitor />
     </ErrorBoundary>
   );
 }
