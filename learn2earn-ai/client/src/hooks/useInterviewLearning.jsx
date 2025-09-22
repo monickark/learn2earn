@@ -77,7 +77,9 @@ export default function useInterviewLearning() {
 
       const result = await response.json();
       if (result.status === "success") {
-        setRounds(result.data);
+        // Handle the nested rounds structure from API
+        const roundsData = result.data.rounds || result.data;
+        setRounds(roundsData);
         setStep(2); // ✅ Auto-move to Step 2 only after success
       } else {
         throw new Error(result.message || "Unknown error");

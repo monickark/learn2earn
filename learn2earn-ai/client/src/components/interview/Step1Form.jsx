@@ -1,18 +1,18 @@
 // components/interview/Step1Form.jsx
 export default function Step1Form({ formData, setFormData, onSubmit, loading }) {
   return (
-    <div className="bg-white rounded-lg shadow-lg p-6 max-w-2xl mx-auto">
-      <h2 className="text-xl font-bold text-indigo-700 mb-4">
+    <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
+      <h2 className="text-lg sm:text-xl font-bold text-indigo-700 mb-4">
         Interview Learning - Step 1
       </h2>
 
-      <div className="space-y-5">
+      <div className="space-y-4 sm:space-y-5">
         {/* Job Title */}
         <div>
           <input
             type="text"
             placeholder="Job Title"
-            className="w-full border p-2 rounded placeholder-gray-400"
+            className="w-full border p-3 rounded placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400"
             value={formData.jobTitle}
             onChange={(e) =>
               setFormData({ ...formData, jobTitle: e.target.value })
@@ -27,7 +27,7 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
         <div>
           <textarea
             placeholder="Job description"
-            className="w-full border p-2 rounded placeholder-gray-400"
+            className="w-full border p-3 rounded placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-y"
             rows="3"
             value={formData.jobDescription}
             onChange={(e) =>
@@ -42,7 +42,7 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
         {/* Years of Experience (Dropdown) */}
         <div>
           <select
-            className="w-full border p-2 rounded text-gray-700"
+            className="w-full border p-3 rounded text-gray-700 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400"
             value={formData.yearsExperience}
             onChange={(e) =>
               setFormData({ ...formData, yearsExperience: e.target.value })
@@ -62,7 +62,7 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
           <input
             type="text"
             placeholder="Skills "
-            className="w-full border p-2 rounded placeholder-gray-400"
+            className="w-full border p-3 rounded placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400"
             value={formData.skills}
             onChange={(e) =>
               setFormData({ ...formData, skills: e.target.value })
@@ -77,7 +77,7 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
         <button
           onClick={onSubmit}
           disabled={loading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-2 px-4 rounded transition-all"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-4 rounded transition-all text-sm sm:text-base font-medium disabled:opacity-50"
         >
           {loading ? "Loading..." : "Generate Rounds"}
         </button>

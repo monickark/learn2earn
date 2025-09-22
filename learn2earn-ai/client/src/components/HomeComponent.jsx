@@ -1,4 +1,6 @@
-export default function HomeComponent({ setActiveTab }) {
+import React, { memo } from 'react';
+
+const HomeComponent = memo(function HomeComponent({ setActiveTab }) {
   const menuGroups = [
     {
       title: "Content Tools",
@@ -17,41 +19,41 @@ export default function HomeComponent({ setActiveTab }) {
   ];
 
   return (
-    <div className="flex flex-col h-full p-4 md:p-6 bg-indigo-50">
+    <div className="flex flex-col h-full bg-indigo-50">
       {/* Compact Welcome Header */}
-      <div className="mb-6 text-center">
+      <div className="mb-6 text-center px-4 pt-4">
         <span className="inline-block px-3 py-1 text-xs font-medium bg-pink-100 text-pink-600 rounded-full mb-2">
           👋 Welcome
         </span>
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
           Welcome to <span className="text-pink-500">Vidgenz</span>
         </h1>
-        <p className="mt-2 text-gray-700 text-sm md:text-base">
+        <p className="mt-2 text-gray-700 text-sm md:text-base max-w-2xl mx-auto">
           Explore AI-powered tools to create, learn, and stay ahead. Choose a module to get started.
         </p>
       </div>
 
-      {/* Horizontal Stack Layout */}
+      {/* Responsive Grid Layout */}
       {menuGroups.map((group) => (
-        <div key={group.title} className="mb-8">
+        <div key={group.title} className="mb-6 sm:mb-8 px-4">
           {/* Group Title */}
           <h2 className="text-sm font-semibold text-gray-700 uppercase tracking-wide border-l-4 border-pink-400 pl-2 mb-4">
             {group.title}
           </h2>
 
-          {/* Horizontal Scrollable Modules */}
-          <div className="flex space-x-4 overflow-x-auto pb-2 scroll-smooth hide-scrollbar">
+          {/* Responsive Grid/Scrollable Modules */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
             {group.modules.map((mod) => (
               <div
                 key={mod.tab}
                 onClick={() => setActiveTab(mod.tab)}
-                className="flex-shrink-0 w-72 p-5 rounded-lg border border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-pink-400 transition duration-200 cursor-pointer flex flex-col justify-between"
+                className="p-4 sm:p-5 rounded-lg border border-gray-200 bg-white shadow-sm hover:shadow-md hover:border-pink-400 transition duration-200 cursor-pointer flex flex-col justify-between min-h-[140px] sm:min-h-[160px]"
               >
                 <div>
-                  <h3 className="text-base font-semibold text-gray-800 group-hover:text-pink-500">
+                  <h3 className="text-sm sm:text-base font-semibold text-gray-800 group-hover:text-pink-500 leading-tight">
                     {mod.name}
                   </h3>
-                  <p className="mt-1 text-gray-500 text-sm">{mod.desc}</p>
+                  <p className="mt-1 text-gray-500 text-xs sm:text-sm leading-relaxed">{mod.desc}</p>
                 </div>
                 <span className="mt-3 inline-block text-pink-500 text-xs font-medium group-hover:underline">
                   Open →
@@ -62,16 +64,10 @@ export default function HomeComponent({ setActiveTab }) {
         </div>
       ))}
 
-      {/* Scrollbar Styling */}
-      <style jsx>{`
-        .hide-scrollbar {
-          -ms-overflow-style: none; /* IE and Edge */
-          scrollbar-width: none; /* Firefox */
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none; /* Chrome, Safari, Opera */
-        }
-      `}</style>
+      {/* Bottom padding for mobile */}
+      <div className="h-4 sm:h-6"></div>
     </div>
   );
-}
+});
+
+export default HomeComponent;
