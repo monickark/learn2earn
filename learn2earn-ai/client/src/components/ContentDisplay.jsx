@@ -1,18 +1,15 @@
-import { useState } from 'react';
+import { useState, memo, useMemo } from 'react';
 import { marked } from 'marked';
 
-export default function ContentDisplay({ content }) {
+const ContentDisplay = memo(function ContentDisplay({ content }) {
   const [activeTab, setActiveTab] = useState("Lesson");
-  console.log("content : ", JSON.stringify(content));
   const [selectedAnswers, setSelectedAnswers] = useState({});
   const [score, setScore] = useState(0);
 
-  const mcqList = content.MCQs || [];
-  const tags = content.Tags || [];
-  const reflections = content.ReflectionPrompts || [];
-  const flashcards = content.Flashcards || [];
-
-  console.log("mcqList : ", mcqList);
+  const mcqList = useMemo(() => content?.MCQs || [], [content?.MCQs]);
+  const tags = useMemo(() => content?.Tags || [], [content?.Tags]);
+  const reflections = useMemo(() => content?.ReflectionPrompts || [], [content?.ReflectionPrompts]);
+  const flashcards = useMemo(() => content?.Flashcards || [], [content?.Flashcards]);
 
   const handleSelect = (index, option, correct) => {
     if (selectedAnswers[index]) return;
@@ -22,11 +19,11 @@ export default function ContentDisplay({ content }) {
   };
 
   return (
-    <div className="space-y-12 text-white">
+    <div className="space-y-8 sm:space-y-12 text-white">
       {/* Section: Lesson */}
       <section>
         <div className="mb-6">
-        <div className="inline-block px-3 py-1 bg-rose-600 text-white text-sm rounded-full mb-2 mt-6">
+        <div className="inline-block px-3 py-1 bg-rose-600 text-white text-xs sm:text-sm rounded-full mb-2 mt-4 sm:mt-6">
           Level: {content.Level}
         </div>
         <div className="flex flex-wrap gap-2 mb-2">
@@ -37,7 +34,7 @@ export default function ContentDisplay({ content }) {
           ))}
         </div>
 
-        <div className="text-sm text-rose-300 italic">
+        <div className="text-xs sm:text-sm text-rose-300 italic">
           Source: <span className="font-medium">{content.Source}</span>
         </div>
       </div>
@@ -45,11 +42,11 @@ export default function ContentDisplay({ content }) {
       </section>
 
         {/* Tabs */}
-      <div className="flex space-x-4 mb-6 border-b border-gray-600">
+      <div className="flex flex-wrap gap-2 sm:gap-4 mb-4 sm:mb-6 border-b border-gray-600 overflow-x-auto">
         {["Lesson", "MCQs", "Flashcards", "Reflections"].map(tab => ( 
           <button
             key={tab}
-            className={`px-4 py-2 font-medium text-sm rounded-t-md transition ${
+            className={`px-3 sm:px-4 py-2 font-medium text-xs sm:text-sm rounded-t-md transition whitespace-nowrap ${
               activeTab === tab ? "bg-gray-700 text-amber-300" : "bg-gray-800 text-gray-400 hover:text-white"
             }`}
             onClick={() => setActiveTab(tab)}
@@ -58,25 +55,25 @@ export default function ContentDisplay({ content }) {
           </button>
         ))}
       </div>
-      <div className="bg-gray-800 p-6 rounded-xl space-y-4">
+      <div className="bg-gray-800 p-4 sm:p-6 rounded-xl space-y-4">
         {activeTab === "Lesson" && (
-          <div className="prose prose-invert max-w-none bg-gray-800 p-6 rounded-xl">
+          <div className="prose prose-invert max-w-none bg-gray-800 p-4 sm:p-6 rounded-xl text-sm sm:text-base">
               <div dangerouslySetInnerHTML={{ __html: marked(content.Lesson || "") }} />
             </div>
         )}
 
       {/* Section: MCQs */}
       {activeTab === "MCQs" && (
-        <div className="space-y-6">
+        <div className="space-y-4 sm:space-y-6">
         {mcqList.map((mcq, i) => (
-          <div key={i} className="mb-6 p-4 bg-gray-800 rounded-xl">
-            <div className="font-medium mb-2">{i + 1}. {mcq.question}</div>
+          <div key={i} className="mb-4 sm:mb-6 p-3 sm:p-4 bg-gray-800 rounded-xl">
+            <div className="font-medium mb-2 text-sm sm:text-base">{i + 1}. {mcq.question}</div>
             <div className="space-y-2">
               {Array.isArray(mcq.options) ? (
                 mcq.options.map((opt) => (
                   <label
                     key={opt.label}
-                    className={`block cursor-pointer p-2 rounded-md transition ${
+                    className={`block cursor-pointer p-2 sm:p-3 rounded-md transition text-sm sm:text-base ${
                       selectedAnswers[i]
                         ? opt.label === mcq.answer
                           ? 'bg-green-500'
@@ -96,21 +93,21 @@ export default function ContentDisplay({ content }) {
                   </label>
                 ))
               ) : (
-                <div className="text-red-400">⚠️ Invalid options format</div>
+                <div className="text-red-400 text-sm">⚠️ Invalid options format</div>
               )}
             </div>
             {selectedAnswers[i] && (
-              <div className="text-sm text-green-300 mt-2">
+              <div className="text-xs sm:text-sm text-green-300 mt-2">
                 Explanation: {mcq.explanation}
               </div>
             )}
           </div>
         ))}
 
-          <div className="text-lg text-rose-300 font-semibold mt-4">
+          <div className="text-base sm:text-lg text-rose-300 font-semibold mt-4">
             Score: {score} / {mcqList.length}
           </div>
-          <div className="text-sm text-rose-400">
+          <div className="text-xs sm:text-sm text-rose-400">
             Correct Answers Selected: {score}
           </div>
       </div>
@@ -118,11 +115,11 @@ export default function ContentDisplay({ content }) {
 
       {/* Section: Flashcards */}
       {activeTab === "Flashcards" && (
-        <div className="grid gap-4 md:grid-cols-2">
+        <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
           {flashcards.map((fc, idx) => (
-            <div key={idx} className="bg-gray-800 p-4 rounded-lg">
-              <div className="font-semibold mb-1">Q: {fc.question}</div>
-              <div className="text-rose-300">A: {fc.answer}</div>
+            <div key={idx} className="bg-gray-800 p-3 sm:p-4 rounded-lg">
+              <div className="font-semibold mb-1 text-sm sm:text-base">Q: {fc.question}</div>
+              <div className="text-rose-300 text-sm sm:text-base">A: {fc.answer}</div>
             </div>
           ))}
         </div>
@@ -130,7 +127,7 @@ export default function ContentDisplay({ content }) {
 
 
         {activeTab === "Reflections" && (
-          <ul className="list-disc pl-6 space-y-2 text-cyan-300">
+          <ul className="list-disc pl-4 sm:pl-6 space-y-2 text-cyan-300 text-sm sm:text-base">
             {reflections.map((r, idx) => <li key={idx}>{r}</li>)}
           </ul>
         )}
@@ -138,4 +135,6 @@ export default function ContentDisplay({ content }) {
     </div>
     </div>
   );
-}
+});
+
+export default ContentDisplay;

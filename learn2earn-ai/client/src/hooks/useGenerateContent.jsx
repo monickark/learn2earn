@@ -1,5 +1,5 @@
 // src/hooks/useGenerateContent.js
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 
 export default function useGenerateContent() {
   const [content, setContent] = useState(null);
@@ -7,7 +7,7 @@ export default function useGenerateContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const handleContent = async (newTopic, newLevel) => {
+  const handleContent = useCallback(async (newTopic, newLevel) => {
     setLoading(true);
     setError('');
     setContent(null);
@@ -44,7 +44,7 @@ export default function useGenerateContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
   return { content, topic, loading, error, handleContent };
 }

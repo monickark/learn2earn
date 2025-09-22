@@ -19,92 +19,110 @@ function SingleSkillTabs({ skill }) {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 sm:space-y-6">
       {/* Skill Title */}
-      <h2 className="text-xl font-bold text-indigo-700">
+      <h2 className="text-lg sm:text-xl font-bold text-indigo-700">
         {topic} ({level})
       </h2>
 
       {/* Tabs */}
-      <div className="flex gap-3 border-b pb-2 overflow-x-auto">
+      <div className="flex gap-1 sm:gap-2 md:gap-3 border-b pb-2 overflow-x-auto scrollbar-hide max-w-full">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-4 py-2 rounded-t-lg font-medium whitespace-nowrap ${
+            className={`px-2 sm:px-3 md:px-4 py-2 rounded-t-lg font-medium whitespace-nowrap text-xs sm:text-sm min-w-fit flex-shrink-0 max-w-[120px] sm:max-w-none ${
               activeTab === tab.key
-                ? "bg-indigo-600 text-white"
+                ? "bg-indigo-600 text-white shadow-sm"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
             }`}
+            title={tab.label}
           >
-            {tab.label}
+            <span className="truncate block">{tab.label}</span>
           </button>
         ))}
       </div>
 
       {/* Tab content */}
-      {activeTab === "overview" && (
-        <div className="prose max-w-none">
-          <h3 className="text-lg font-bold mb-2">{content.Round}</h3>
-          <p>{content.Overview}</p>
-        </div>
-      )}
+      <div className="mt-4 sm:mt-6">
+        {activeTab === "overview" && (
+          <div className="prose max-w-none text-sm sm:text-base">
+            <h3 className="text-base sm:text-lg font-bold mb-3">{content.Round}</h3>
+            <p className="leading-relaxed text-gray-700">{content.Overview}</p>
+          </div>
+        )}
 
-      {activeTab === "topics" && (
-        <ul className="list-disc ml-6 space-y-2 text-gray-700">
-          {content.MustKnowTopics?.map((t, i) => (
-            <li key={i}>{t}</li>
-          ))}
-        </ul>
-      )}
+        {activeTab === "topics" && (
+          <div className="space-y-3">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Must-Know Topics:</h3>
+            <ul className="list-disc ml-4 sm:ml-6 space-y-2 text-gray-700 text-sm sm:text-base">
+              {content.MustKnowTopics?.map((t, i) => (
+                <li key={i} className="leading-relaxed">{t}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-      {activeTab === "studyplan" && (
-        <ol className="list-decimal ml-6 space-y-2 text-gray-700">
-          {content.StudyPlan?.map((step, i) => (
-            <li key={i}>{step}</li>
-          ))}
-        </ol>
-      )}
+        {activeTab === "studyplan" && (
+          <div className="space-y-3">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Study Plan:</h3>
+            <ol className="list-decimal ml-4 sm:ml-6 space-y-2 text-gray-700 text-sm sm:text-base">
+              {content.StudyPlan?.map((step, i) => (
+                <li key={i} className="leading-relaxed">{step}</li>
+              ))}
+            </ol>
+          </div>
+        )}
 
-      {activeTab === "questions" && (
-        <div className="space-y-6">
-          {content.Questions?.map((q, i) => (
-            <div key={i} className="p-4 border rounded-lg bg-white shadow-sm">
-              <p className="font-medium mb-2">
-                {i + 1}. {q.question}
-              </p>
-              <p className="mt-2 text-green-700 text-sm">
-                ✅ {q.sampleAnswer}
-              </p>
-            </div>
-          ))}
-        </div>
-      )}
+        {activeTab === "questions" && (
+          <div className="space-y-4 sm:space-y-6">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Interview Questions:</h3>
+            {content.Questions?.map((q, i) => (
+              <div key={i} className="p-3 sm:p-4 border rounded-lg bg-gray-50 shadow-sm">
+                <p className="font-medium mb-2 text-sm sm:text-base text-gray-800">
+                  {i + 1}. {q.question}
+                </p>
+                <div className="mt-3 p-3 bg-green-50 border-l-4 border-green-400 rounded-r">
+                  <p className="text-green-800 text-xs sm:text-sm leading-relaxed">
+                    <span className="font-medium">Sample Answer:</span> {q.sampleAnswer}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
 
-      {activeTab === "mistakes" && (
-        <ul className="list-disc ml-6 space-y-2 text-red-600">
-          {content.MistakesToAvoid?.map((m, i) => (
-            <li key={i}>{m}</li>
-          ))}
-        </ul>
-      )}
+        {activeTab === "mistakes" && (
+          <div className="space-y-3">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Mistakes to Avoid:</h3>
+            <ul className="list-disc ml-4 sm:ml-6 space-y-2 text-red-600 text-sm sm:text-base">
+              {content.MistakesToAvoid?.map((m, i) => (
+                <li key={i} className="leading-relaxed">{m}</li>
+              ))}
+            </ul>
+          </div>
+        )}
 
-      {activeTab === "resources" && (
-        <ul className="list-disc ml-6 space-y-2 text-blue-700">
-          {content.RecommendedResources?.map((r, i) => (
-            <li key={i}>
-              <a
-                href={r.includes("http") ? r : "#"}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:underline"
-              >
-                {r}
-              </a>
-            </li>
-          ))}
-        </ul>
-      )}
+        {activeTab === "resources" && (
+          <div className="space-y-3">
+            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Recommended Resources:</h3>
+            <ul className="list-disc ml-4 sm:ml-6 space-y-2 text-blue-700 text-sm sm:text-base">
+              {content.RecommendedResources?.map((r, i) => (
+                <li key={i} className="leading-relaxed">
+                  <a
+                    href={r.includes("http") ? r : "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="hover:underline break-all text-blue-600 hover:text-blue-800"
+                  >
+                    {r}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
@@ -122,36 +140,36 @@ export default function Step3LearningTabs({ formData = {}, selectedRound = {}, l
     .filter(Boolean);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-8">
+    <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 px-4 no-overflow">
       {/* Step Header */}
       <div className="flex items-center gap-3">
-        <div className="h-10 w-10 rounded-xl bg-indigo-100 flex items-center justify-center">
-          <span className="text-indigo-700 text-lg">📘</span>
+        <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-indigo-100 flex items-center justify-center">
+          <span className="text-indigo-700 text-base sm:text-lg">📘</span>
         </div>
-        <h2 className="text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
+        <h2 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
           Step 3: Learning Content for {selectedRound?.roundName || "Selected Round"}
         </h2>
       </div>
 
       {/* Job Information Card (same style as Step 2) */}
       <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm bg-white">
-        <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 p-5">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-3">
-              <div className="h-10 w-10 rounded-xl bg-white/15 flex items-center justify-center">
-                <span className="text-white text-lg">🧾</span>
+        <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 p-4 sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-white/15 flex items-center justify-center">
+                <span className="text-white text-base sm:text-lg">🧾</span>
               </div>
               <div>
                 <p className="text-white/80 text-xs uppercase tracking-wider">
                   Job Information
                 </p>
-                <h3 className="text-white text-lg font-semibold">
+                <h3 className="text-white text-base sm:text-lg font-semibold">
                   {formData?.jobTitle || "—"}
                 </h3>
               </div>
             </div>
             {formData?.yearsExperience && (
-              <span className="inline-flex items-center gap-2 text-white/90 text-sm bg-white/10 border border-white/20 px-3 py-1.5 rounded-full">
+              <span className="inline-flex items-center gap-2 text-white/90 text-xs sm:text-sm bg-white/10 border border-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
                 ⏳ {formData.yearsExperience} yrs exp
               </span>
             )}
@@ -159,18 +177,18 @@ export default function Step3LearningTabs({ formData = {}, selectedRound = {}, l
         </div>
 
         {/* Body */}
-        <div className="p-6 space-y-4">
+        <div className="p-4 sm:p-6 space-y-4">
           {/* Skills */}
           <div className="flex items-start gap-3">
             <span className="text-indigo-600 mt-0.5">🧠</span>
             <div className="w-full">
               <p className="text-xs uppercase text-gray-500 tracking-wider">Skills</p>
               {skillsArray.length > 0 ? (
-                <div className="flex flex-wrap gap-2 mt-1">
+                <div className="flex flex-wrap gap-1 sm:gap-2 mt-1">
                   {skillsArray.map((skill, i) => (
                     <span
                       key={`${skill}-${i}`}
-                      className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-medium text-indigo-700"
+                      className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-2 sm:px-2.5 py-1 text-xs font-medium text-indigo-700"
                     >
                       {skill}
                     </span>
@@ -188,7 +206,7 @@ export default function Step3LearningTabs({ formData = {}, selectedRound = {}, l
               <span className="text-indigo-600 mt-0.5">📝</span>
               <div>
                 <p className="text-xs uppercase text-gray-500 tracking-wider">Job Description</p>
-                <p className="mt-1 text-gray-700 leading-relaxed">
+                <p className="mt-1 text-gray-700 leading-relaxed text-sm sm:text-base">
                   {formData.jobDescription}
                 </p>
               </div>
@@ -198,22 +216,38 @@ export default function Step3LearningTabs({ formData = {}, selectedRound = {}, l
       </div>
 
       {/* Main Layout */}
-      <div className="flex h-[70vh] border rounded-lg overflow-hidden shadow">
-        {/* Sidebar */}
-        <div className="w-64 bg-gray-50 border-r overflow-y-auto">
-          <h2 className="px-4 py-3 font-bold text-indigo-700 border-b">Skills</h2>
+      <div className="flex flex-col lg:flex-row h-[50vh] sm:h-[60vh] lg:h-[70vh] border rounded-lg overflow-hidden shadow">
+        {/* Mobile Skills Selector */}
+        <div className="lg:hidden bg-gray-50 border-b p-3 sm:p-4">
+          <h2 className="font-bold text-indigo-700 mb-3 text-sm">Select Skill:</h2>
+          <select
+            value={selectedSkillIndex}
+            onChange={(e) => setSelectedSkillIndex(parseInt(e.target.value))}
+            className="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          >
+            {learningContent.map((skill, idx) => (
+              <option key={idx} value={idx}>
+                {skill.topic}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {/* Desktop Sidebar */}
+        <div className="hidden lg:block w-48 xl:w-64 bg-gray-50 border-r overflow-y-auto">
+          <h2 className="px-3 xl:px-4 py-3 font-bold text-indigo-700 border-b text-sm">Skills</h2>
           <ul className="space-y-1">
             {learningContent.map((skill, idx) => (
               <li key={idx}>
                 <button
                   onClick={() => setSelectedSkillIndex(idx)}
-                  className={`w-full text-left px-4 py-2 block transition-colors ${
+                  className={`w-full text-left px-3 xl:px-4 py-2 block transition-colors text-xs xl:text-sm ${
                     selectedSkillIndex === idx
                       ? "bg-indigo-600 text-white font-medium rounded-r-full"
                       : "hover:bg-gray-100 text-gray-700"
                   }`}
                 >
-                  {skill.topic}
+                  <span className="truncate block">{skill.topic}</span>
                 </button>
               </li>
             ))}
@@ -221,7 +255,7 @@ export default function Step3LearningTabs({ formData = {}, selectedRound = {}, l
         </div>
 
         {/* Content */}
-        <div className="flex-1 p-6 overflow-y-auto bg-white">
+        <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto bg-white">
           <SingleSkillTabs skill={learningContent[selectedSkillIndex]} />
         </div>
       </div>

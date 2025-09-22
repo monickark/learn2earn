@@ -8,5 +8,21 @@ export default defineConfig({
     proxy: {
       '/api': 'http://localhost:4000'
     }
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          ui: ['react-joyride'],
+          utils: ['marked']
+        }
+      }
+    },
+    chunkSizeWarningLimit: 1000,
+    minify: 'esbuild'
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom', 'react-joyride', 'marked']
   }
 })
