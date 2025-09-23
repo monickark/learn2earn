@@ -2,12 +2,15 @@
 import dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import generateContentRoute from './routes/generateContent.js';
 import trendingTopics from './routes/trendingTopics.js';
 import summarizeUrlRoute from './routes/summarizeUrl.js';
 import summarizeArticleRoute from './routes/summarizeArticle.js';
 import interviewRoutes from "./routes/generate-rounds.js"; //
 import generateRoundContentRoute from "./routes/generateRoundContent.js";
+import authRoutes from './routes/auth.js';
+import profileRoutes from './routes/profile.js';
 
 const app = express();
 dotenv.config();
@@ -31,6 +34,7 @@ app.use(
   credentials: true
 }));
 app.use(express.json());
+app.use(cookieParser());
 
 
 // ✅ Routes
@@ -44,6 +48,10 @@ app.use('/api/summarize-article', summarizeArticleRoute);
 // Interview Routes
 app.use("/api/interview", interviewRoutes);
 app.use("/api/generate-round-content", generateRoundContentRoute);
+
+// Auth Routes (server-managed sessions)
+app.use('/api/auth', authRoutes);
+app.use('/api/profile', profileRoutes);
 
 // ✅ Start server
 const PORT = process.env.PORT || 4000;
