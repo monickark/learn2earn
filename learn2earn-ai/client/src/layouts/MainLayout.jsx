@@ -2,8 +2,11 @@
 import { useState, useEffect } from "react";
 import HomeComponent from "../components/HomeComponent";
 
-export default function MainLayout({ activeTab, setActiveTab, children }) {
+export default function MainLayout({ activeTab, setActiveTab, onLogout, children }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [userLabel, setUserLabel] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState('');
+  const [userEmail, setUserEmail] = useState('');
 
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
@@ -37,6 +40,31 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
       document.body.classList.remove('sidebar-open');
     };
   }, [sidebarOpen]);
+
+  useEffect(() => {
+    // Fetch profile to show display name and avatar
+    (async () => {
+      try {
+        const base = import.meta.env.VITE_API_URL || window.location.origin;
+        const url = `${base.replace(/\/$/, '')}/api/profile`;
+        const res = await fetch(url, { credentials: 'include' });
+        const text = await res.text();
+        let data;
+        try { data = JSON.parse(text); } catch { data = null; }
+        const guest = localStorage.getItem('guest') === 'true';
+        const profile = data?.profile || {};
+        const name = (profile.display_name || '').trim();
+        setUserEmail(profile.email || '');
+        setUserLabel(name || (guest ? 'Guest' : ''));
+        setAvatarUrl(profile.avatar_url || '');
+      } catch {
+        const guest = localStorage.getItem('guest') === 'true';
+        setUserLabel(guest ? 'Guest' : '');
+        setUserEmail('');
+        setAvatarUrl('');
+      }
+    })();
+  }, []);
 
   return (
     <div className="flex font-openSans h-screen relative">
@@ -120,8 +148,6 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
             {[
               { key: "url", label: "🔗 URL Summary" },
               { key: "article", label: "📰 Article Summary" },
-              // { key: "video", label: "🎥 Video Summary" },
-              // { key: "audio", label: "🎧 Audio Summary" },
             ].map(({ key, label }) => (
               <button
                 key={key}
@@ -158,27 +184,18 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
             >
               🎯 Learning
             </button>
-         
-            {/* <button
-              className={`w-full text-left px-4 py-3 rounded-lg transition-all duration-200 ${
-                activeTab === "practice"
-                  ? "bg-indigo-600 shadow-md"
-                  : "hover:bg-indigo-500 hover:shadow-lg"
-              }`}
-              onClick={() => setActiveTab("practice")}
-            >
-              🧑‍💻 Practice
-            </button> */}
           </div>
+
+          {/* Removed Profile section */}
         </nav>
 
-        {/* Settings */}
+        {/* Footer actions */}
         <div className="mt-auto pt-5 border-t border-indigo-500/40">
-          <button 
-            className="w-full text-left px-4 py-3 rounded-lg hover:bg-indigo-500 hover:shadow-lg transition-all duration-200"
-            onClick={closeSidebar}
+          <button
+            className="w-full text-left px-4 py-3 rounded-lg hover:bg-red-500/20 hover:shadow-lg transition-all duration-200 text-red-200"
+            onClick={() => { onLogout && onLogout(); closeSidebar(); }}
           >
-            ⚙ Settings
+            🚪 Logout
           </button>
         </div>
       </div>
@@ -208,6 +225,7 @@ export default function MainLayout({ activeTab, setActiveTab, children }) {
 
         {/* Content Area */}
         <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-auto bg-gradient-to-br from-indigo-100 to-purple-100">
+          {/* Removed top-right greeting */}
           {activeTab === "home" ? (
             <HomeComponent setActiveTab={setActiveTab} />
           ) : (

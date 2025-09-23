@@ -1,6 +1,25 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 
 const HomeComponent = memo(function HomeComponent({ setActiveTab }) {
+  const [displayName, setDisplayName] = useState('');
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const base = import.meta.env.VITE_API_URL || window.location.origin;
+        const url = `${base.replace(/\/$/, '')}/api/profile`;
+        const res = await fetch(url, { credentials: 'include' });
+        const text = await res.text();
+        let data; try { data = JSON.parse(text); } catch { data = null; }
+        const guest = localStorage.getItem('guest') === 'true';
+        const name = (data?.profile?.display_name || '').trim();
+        setDisplayName(name || (guest ? 'Guest' : ''));
+      } catch {
+        const guest = localStorage.getItem('guest') === 'true';
+        setDisplayName(guest ? 'Guest' : '');
+      }
+    })();
+  }, []);
   const menuGroups = [
     {
       title: "Content Tools",
@@ -20,17 +39,21 @@ const HomeComponent = memo(function HomeComponent({ setActiveTab }) {
 
   return (
     <div className="flex flex-col h-full bg-indigo-50">
-      {/* Compact Welcome Header */}
-      <div className="mb-6 text-center px-4 pt-4">
-        <span className="inline-block px-3 py-1 text-xs font-medium bg-pink-100 text-pink-600 rounded-full mb-2">
-          👋 Welcome
-        </span>
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
-          Welcome to <span className="text-pink-500">Vidgenz</span>
-        </h1>
-        <p className="mt-2 text-gray-700 text-sm md:text-base max-w-2xl mx-auto">
-          Explore AI-powered tools to create, learn, and stay ahead. Choose a module to get started.
-        </p>
+      {/* Eye-catching Welcome Header */}
+      <div className="relative mb-6 sm:mb-8 px-4 pt-6">
+        <div className="absolute inset-0 -z-10 opacity-30 bg-gradient-to-r from-fuchsia-300 via-pink-300 to-amber-200 blur-3xl rounded-3xl pointer-events-none" />
+        <div className="max-w-3xl mx-auto text-center bg-white/70 backdrop-blur-md border border-pink-200 rounded-2xl p-4 sm:p-6 shadow-md">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-pink-100 text-pink-700 text-xs font-semibold mb-2">
+            <span>👋</span>
+            <span>Welcome{displayName ? `, ${displayName}` : ''}</span>
+          </div>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-gray-900">
+            Learn, Create, and Prepare with <span className="text-pink-600">Vidgenz</span>
+          </h1>
+          <p className="mt-2 text-gray-700 text-sm md:text-base max-w-2xl mx-auto">
+            Explore AI-powered tools to create content, summarize knowledge, and ace your interviews.
+          </p>
+        </div>
       </div>
 
       {/* Responsive Grid Layout */}

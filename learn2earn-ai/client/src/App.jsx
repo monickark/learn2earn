@@ -7,17 +7,20 @@ import Walkthrough from "./components/Walkthrough";
 import HeroSection from "./components/HeroSection";
 import LoadingSpinner from "./components/common/LoadingSpinner";
 import ErrorBoundary from "./components/common/ErrorBoundary";
-import PerformanceMonitor from "./components/common/PerformanceMonitor";
+import AuthScreen from "./components/common/AuthScreen";
 
 // Lazy load components
 const MainContentRenderer = lazy(() => import("./components/MainContentRenderer"));
 const HomeComponent = lazy(() => import("./components/HomeComponent"));
+// Removed UserProfile import
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("home"); 
   const [showTour, setShowTour] = useState(false);
   const [trendingTopics, setTrendingTopics] = useState([]);
-  const [interviewStep, setInterviewStep] = useState(1); // ✅ track interview step
+  const [interviewStep, setInterviewStep] = useState(1);
+  const [userChecked, setUserChecked] = useState(false);
+  const [user, setUser] = useState(null);
 
   const { content, topic, loading: loadingTopic, error: errorTopic, handleContent } =
     useGenerateContent();
@@ -25,6 +28,28 @@ export default function App() {
     useSummarizeUrl();
   const { summary, loading: articleLoading, error: articleError, handleArticleSummary } =
     useSummarizeArticle();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/session`, { credentials: 'include' });
+        const data = await res.json();
+        const guest = localStorage.getItem("guest") === "true";
+        if (data?.user) {
+          setUser(data.user);
+        } else if (guest) {
+          setUser({ guest: true });
+        } else {
+          setUser(null);
+        }
+      } catch (e) {
+        const guest = localStorage.getItem("guest") === "true";
+        if (guest) setUser({ guest: true });
+      } finally {
+        setUserChecked(true);
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     if (activeTab === "topic") {
@@ -42,9 +67,36 @@ export default function App() {
     }
   }, []);
 
+  const handleLogout = async () => {
+    try {
+      await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+        method: 'POST',
+        credentials: 'include'
+      });
+    } catch (e) {
+      console.error('Logout error', e);
+    } finally {
+      localStorage.removeItem('guest');
+      setUser(null);
+      setActiveTab('home');
+    }
+  };
+
+  if (!userChecked) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-50 to-purple-50">
+        <div className="text-gray-700 text-sm">Loading…</div>
+      </div>
+    );
+  }
+
+  if (!user && localStorage.getItem("guest") !== "true") {
+    return <AuthScreen onAuthenticated={(u) => { setUser(u || {}); setActiveTab("home"); }} />;
+  }
+
   return (
     <ErrorBoundary>
-      <MainLayout activeTab={activeTab} setActiveTab={setActiveTab}>
+      <MainLayout activeTab={activeTab} setActiveTab={setActiveTab} onLogout={handleLogout}>
         <Walkthrough showTour={showTour} />
         {activeTab !== "home" && (
           <HeroSection activeTab={activeTab} step={interviewStep} />
@@ -79,7 +131,6 @@ export default function App() {
           </Suspense>
         </div>
       </MainLayout>
-      <PerformanceMonitor />
     </ErrorBoundary>
   );
 }

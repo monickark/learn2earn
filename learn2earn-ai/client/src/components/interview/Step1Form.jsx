@@ -1,10 +1,31 @@
 // components/interview/Step1Form.jsx
 export default function Step1Form({ formData, setFormData, onSubmit, loading }) {
+  const sampleData = {
+    jobTitle: "Frontend Engineer",
+    jobDescription:
+      "We are looking for a Frontend Engineer experienced with React, TypeScript, state management, performance optimization, and accessibility. Familiarity with REST APIs, testing frameworks, and CI/CD is a plus.",
+    yearsExperience: "4-6",
+    skills: "React, TypeScript, JavaScript, Web Performance, Accessibility, CSS, Testing"
+  };
+
+  const applySample = () => {
+    setFormData({ ...formData, ...sampleData });
+  };
   return (
     <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
-      <h2 className="text-lg sm:text-xl font-bold text-indigo-700 mb-4">
-        Interview Learning - Step 1
-      </h2>
+      <div className="flex items-start justify-between mb-4">
+        <h2 className="text-lg sm:text-xl font-bold text-indigo-700">
+          Interview Learning - Step 1
+        </h2>
+        <button
+          type="button"
+          onClick={applySample}
+          className="text-xs sm:text-sm inline-flex items-center gap-1 px-2.5 py-1.5 rounded-lg border border-indigo-200 text-indigo-700 bg-indigo-50 hover:bg-indigo-100"
+          title="Prefill sample data for quick testing"
+        >
+          ⚡ Use sample data
+        </button>
+      </div>
 
       <div className="space-y-4 sm:space-y-5">
         {/* Job Title */}

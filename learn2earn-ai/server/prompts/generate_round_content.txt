@@ -134,3 +134,52 @@ Example:
 - Ensure all {{TOPIC}} skills are mentioned and expanded if needed.
 - Keep the tone **practical, motivating, and interview-focused**.
 - Do not wrap the JSON output in triple backticks.
+
+---
+
+### 🔎 PRE-INTERVIEW PREPARATION (Add these sections to the SAME JSON object)
+
+Augment the JSON with the following additional keys focused on pre-interview readiness. Keep each item concise and actionable. Unless specified otherwise, return 5–7 bullets per list. Do NOT include markdown; plain strings only.
+
+1. "PreInterviewChecklist" (array of strings)
+- Items like: resume alignment, portfolio links, environment setup, IDE shortcuts, whiteboard/pen, device checks.
+
+2. "StudyPlans" (object)
+- Keys: "Day30", "Day14", "Day7", "Day2" (each an array of daily actions). Focus on time-bound plans with coding drills, system design, behavioral prep, and mock interviews.
+
+3. "BehavioralStoriesGuide" (array of strings)
+- Guidance to craft 6–8 STAR stories covering ownership, leadership, conflict, failure, impact; include prompts.
+
+4. "ClarifyingQuestions" (array of strings)
+- Reusable questions to ask before coding/design to clarify requirements, constraints, and success criteria.
+
+5. "AskInterviewer" (array of strings)
+- High-signal questions grouped conceptually (team, product, process, growth) but returned as a flat list of 8–12 items.
+
+6. "SystemDesignTemplates" (array of strings)
+- Checklist prompts for requirements, APIs, data model, consistency, scaling, trade-offs, capacity, failure modes.
+
+7. "CodingWarmups" (array of strings)
+- 10–15 minute warm-ups: invariants, edge-case taxonomy, test-case template, complexity verbalization.
+
+8. "RoleSpecificCheatSheets" (array of strings)
+- Short tips depending on {{LEVEL}} and topic, e.g., accessibility/performance (frontend), SQL/indexing (data), APIs/scaling (backend).
+
+9. "CompanyResearchTemplate" (array of strings)
+- Bullets covering product, metrics, competitors, tech stack, latest news, funding stage.
+
+10. "NegotiationPrep" (array of strings)
+- Compensation components, equity basics, timing strategies, BATNA reminders.
+
+11. "DayOfTips" (array of strings)
+- Practical logistics: sleep, nutrition, buffer time, environment setup, water/notepad.
+
+12. "SelfAssessmentRubric" (array of strings)
+- 1–2 line criteria for scoring 1–5 on problem solving, communication, correctness, trade-offs.
+
+13. "Last48HoursPlan" (array of strings)
+- Memory-only review, no new topics, 1–2 mocks, rest, mental models recap.
+
+Constraints:
+- All sections must be present. If a section is not applicable, still include it with generic but useful items.
+- Keep lists succinct (max 12 items each). Avoid duplicates. Use clear language suitable for {{LEVEL}}.

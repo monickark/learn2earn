@@ -1,5 +1,5 @@
 // components/interview/Step3LearningTabs.jsx
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function SingleSkillTabs({ skill }) {
   const [activeTab, setActiveTab] = useState("overview");
@@ -16,6 +16,7 @@ function SingleSkillTabs({ skill }) {
     { key: "questions", label: "Questions" },
     { key: "mistakes", label: "Mistakes to Avoid" },
     { key: "resources", label: "Resources" },
+    { key: "prep", label: "Prep before interview" },
   ];
 
   return (
@@ -122,13 +123,193 @@ function SingleSkillTabs({ skill }) {
             </ul>
           </div>
         )}
+
+        {activeTab === "prep" && (
+          <div className="space-y-6">
+            {/* Pre-Interview Checklist */}
+            {Array.isArray(content.PreInterviewChecklist) && content.PreInterviewChecklist.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Pre-Interview Checklist</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.PreInterviewChecklist.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Study Plans */}
+            {content.StudyPlans && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Study Plans</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {[
+                    { key: "Day30", label: "30-Day Plan" },
+                    { key: "Day14", label: "14-Day Plan" },
+                    { key: "Day7", label: "7-Day Plan" },
+                    { key: "Day2", label: "Last 2 Days" },
+                  ].map((p) => (
+                    <div key={p.key} className="p-3 border rounded-lg bg-gray-50">
+                      <h4 className="font-medium text-gray-800 mb-2 text-sm">{p.label}</h4>
+                      <ol className="list-decimal ml-4 space-y-1 text-gray-700 text-sm">
+                        {Array.isArray(content.StudyPlans?.[p.key]) && content.StudyPlans[p.key].map((step, i) => (
+                          <li key={i}>{step}</li>
+                        ))}
+                      </ol>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )}
+
+            {/* Behavioral Stories Guide */}
+            {Array.isArray(content.BehavioralStoriesGuide) && content.BehavioralStoriesGuide.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Behavioral Stories Guide</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.BehavioralStoriesGuide.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Clarifying Questions */}
+            {Array.isArray(content.ClarifyingQuestions) && content.ClarifyingQuestions.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Clarifying Questions</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.ClarifyingQuestions.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Ask the Interviewer */}
+            {Array.isArray(content.AskInterviewer) && content.AskInterviewer.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Ask the Interviewer</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.AskInterviewer.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* System Design Templates */}
+            {Array.isArray(content.SystemDesignTemplates) && content.SystemDesignTemplates.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">System Design Templates</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.SystemDesignTemplates.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Coding Warm-ups */}
+            {Array.isArray(content.CodingWarmups) && content.CodingWarmups.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Coding Warm-ups</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.CodingWarmups.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Role-specific Cheat Sheets */}
+            {Array.isArray(content.RoleSpecificCheatSheets) && content.RoleSpecificCheatSheets.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Role-Specific Cheat Sheets</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.RoleSpecificCheatSheets.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Company Research Template */}
+            {Array.isArray(content.CompanyResearchTemplate) && content.CompanyResearchTemplate.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Company Research Template</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.CompanyResearchTemplate.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Negotiation Prep */}
+            {Array.isArray(content.NegotiationPrep) && content.NegotiationPrep.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Negotiation Prep</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.NegotiationPrep.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Day-of Tips */}
+            {Array.isArray(content.DayOfTips) && content.DayOfTips.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Day-of Tips</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.DayOfTips.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Self-Assessment Rubric */}
+            {Array.isArray(content.SelfAssessmentRubric) && content.SelfAssessmentRubric.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Self-Assessment Rubric</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.SelfAssessmentRubric.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+
+            {/* Last 48 Hours Plan */}
+            {Array.isArray(content.Last48HoursPlan) && content.Last48HoursPlan.length > 0 && (
+              <section>
+                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Last 48 Hours Plan</h3>
+                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+                  {content.Last48HoursPlan.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
 }
 
-export default function Step3LearningTabs({ formData = {}, selectedRound = {}, learningContent }) {
+export default function Step3LearningTabs({ formData = {}, selectedRounds = [], learningContent }) {
   const [selectedSkillIndex, setSelectedSkillIndex] = useState(0);
+
+  // Auto-select the first skill that has non-empty content
+  useEffect(() => {
+    if (Array.isArray(learningContent) && learningContent.length > 0) {
+      const firstWithContent = learningContent.findIndex((item) => item && item.content && Object.keys(item.content || {}).length > 0);
+      setSelectedSkillIndex(firstWithContent >= 0 ? firstWithContent : 0);
+    }
+  }, [learningContent]);
 
   if (!learningContent || !learningContent.length) {
     return <p className="text-gray-500 text-center">No content available.</p>;
@@ -147,7 +328,7 @@ export default function Step3LearningTabs({ formData = {}, selectedRound = {}, l
           <span className="text-indigo-700 text-base sm:text-lg">📘</span>
         </div>
         <h2 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
-          Step 3: Learning Content for {selectedRound?.roundName || "Selected Round"}
+          Step 3: Learning Content for {selectedRounds?.[0]?.roundName || "Selected Round"}
         </h2>
       </div>
 
