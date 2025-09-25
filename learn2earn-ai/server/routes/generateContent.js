@@ -19,32 +19,34 @@ router.post('/', async (req, res) => {
     const aiResponse = await generateEducationalContent(topic, level);
     const content = formatResponse(aiResponse);
     console.log("content generated")
-    // 2. Update or insert into Supabase (atomic logic)
-    const { error: upsertError } = await supabase
-      .from('search_history')
-      .upsert(
-        [
-          {
-            topic,
-            count: 1,
-            updated_at: new Date().toISOString()
-          }
-        ]
-      );
-      console.log("insert completed");
-    if (upsertError && upsertError.code == '23505') {
-      console.log('Upsert error:', upsertError.message);
-    }
+    // 2. Record search history (non-critical operation, don't fail if it errors)
+    try {
+      // Try insert first (most new topics case)
+      const { error: insertError } = await supabase
+        .from('search_history')
+        .insert([{
+          topic,
+          count: 1,
+          updated_at: new Date().toISOString()
+        }]);
 
-    // 3. If topic already existed, increment count via RPC
-    if (upsertError) {
-      const { data, error: incrementError } = await supabase.rpc('increment_search_count', {
-        search_topic: topic
-      });
-
-      if (incrementError) {
-        console.log('RPC increment error:', incrementError.message);
+      if (insertError && insertError.code === '23505') {
+        // Topic exists, use the RPC to increment count
+        const { error: incrementError } = await supabase
+          .rpc('increment_search_count', { search_topic: topic });
+          
+        if (incrementError) {
+          console.log('Search history increment error:', incrementError.message);
+        } else {
+          console.log("Search count incremented for existing topic");
+        }
+      } else if (insertError) {
+        console.log('Search history insert error:', insertError.message);
+      } else {
+        console.log("New topic inserted into search history");
       }
+    } catch (err) {
+      console.log('Search history operation failed:', err.message);
     }
 
     // 4. Respond with generated content

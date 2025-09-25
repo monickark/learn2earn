@@ -7,8 +7,8 @@ const router = express.Router();
 function setSessionCookie(res, payload) {
   res.cookie('session', JSON.stringify(payload), {
     httpOnly: true,
-    sameSite: 'lax',
-    secure: false,
+    sameSite: 'strict', // More secure than 'lax'
+    secure: process.env.NODE_ENV === 'production', // Use secure cookies in production
     maxAge: 7 * 24 * 60 * 60 * 1000
   });
 }
