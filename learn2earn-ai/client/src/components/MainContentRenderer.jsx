@@ -1,4 +1,5 @@
 // src/components/MainContentRenderer.jsx
+import React, { useState } from 'react';
 import ContentDisplay from "./ContentDisplay";
 import UrlSummaryDisplay from "./UrlSummaryDisplay";
 import ArticleSummaryDisplay from "./ArticleSummaryDisplay";
@@ -27,16 +28,30 @@ export default function MainContentRenderer({
   handleArticleSummary,
   setInterviewStep
 }) {
+  const [selectedTopic, setSelectedTopic] = useState('');
+
+  const handleTrendingTopicClick = (topicName) => {
+    setSelectedTopic(topicName);
+  };
+
+  const handleTopicChange = (newTopic) => {
+    setSelectedTopic(newTopic);
+  };
+
   if (activeTab === "topic") {
     return (
       <>
         {/* Topic Input Form */}
-        <TopicForm onSubmit={handleContent} />
+        <TopicForm 
+          onSubmit={handleContent} 
+          externalTopic={selectedTopic}
+          onTopicChange={handleTopicChange}
+        />
 
-        {/* Always show Trending Topics */}
-        {trendingTopics.length > 0 && (
+        {/* Show Trending Topics only when not loading and no content */}
+        {trendingTopics.length > 0 && !loadingTopic && !content && (
           <div className="mt-6">
-            <TrendingTopics topics={trendingTopics} onClick={handleContent} />
+            <TrendingTopics topics={trendingTopics} onClick={handleTrendingTopicClick} />
           </div>
         )}
 

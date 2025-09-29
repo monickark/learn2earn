@@ -1,9 +1,15 @@
 // src/components/forms/TopicForm.jsx
-import React, { useState, memo, useCallback } from 'react';
+import React, { useState, memo, useCallback, useEffect } from 'react';
 
-const TopicForm = memo(function TopicForm({ onSubmit }) {
+const TopicForm = memo(function TopicForm({ onSubmit, externalTopic = '', onTopicChange }) {
   const [topic, setTopic] = useState('');
   const [level, setLevel] = useState('Beginner');
+
+  useEffect(() => {
+    if (externalTopic && externalTopic !== topic) {
+      setTopic(externalTopic);
+    }
+  }, [externalTopic]);
 
   const handleSubmit = useCallback((e) => {
     e.preventDefault();
@@ -21,7 +27,10 @@ const TopicForm = memo(function TopicForm({ onSubmit }) {
         type="text"
         placeholder="Enter a topic (e.g., Blockchain)"
         value={topic}
-        onChange={(e) => setTopic(e.target.value)}
+        onChange={(e) => {
+          setTopic(e.target.value);
+          onTopicChange && onTopicChange(e.target.value);
+        }}
         className="flex-1 px-4 py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400 text-sm sm:text-base"
       />
       <select

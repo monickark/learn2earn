@@ -14,7 +14,8 @@ export default function useSummarizeUrl() {
     setUrl(link);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/summarize-url`, {
+      const base = import.meta.env.VITE_API_URL || window.location.origin;
+      const res = await fetch(`${base}/api/summarize-url`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ url: link }),

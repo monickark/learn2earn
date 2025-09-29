@@ -11,8 +11,9 @@ export default function useGenerateRoundContent() {
     setContent([]);
 
     try {
+      const base = import.meta.env.VITE_API_URL || window.location.origin;
       const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/api/generate-round-content`,
+        `${base}/api/generate-round-content`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

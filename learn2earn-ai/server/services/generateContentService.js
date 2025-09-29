@@ -5,23 +5,12 @@ import path from 'path';
 
 export default async function generateEducationalContent (topic, level) {
   console.log("generateEducationalContent triggered : ", topic, level);
-  
-  // Get and clean environment variables (handle case where they might have prefixes)
-  let azureKey = process.env.AZURE_OPENAI_KEY;
-  let azureEndpoint = process.env.AZURE_OPENAI_ENDPOINT;
-  let azureDeployment = process.env.AZURE_OPENAI_DEPLOYMENT_NAME;
-  let azureApiVersion = process.env.AZURE_OPENAI_API_VERSION;
-
-  // Clean up variables that might include the variable name prefix (only if they start with the exact variable name)
-  if (azureKey?.startsWith('AZURE_OPENAI_KEY=')) azureKey = azureKey.slice('AZURE_OPENAI_KEY='.length);
-  if (azureEndpoint?.startsWith('AZURE_OPENAI_ENDPOINT=')) azureEndpoint = azureEndpoint.slice('AZURE_OPENAI_ENDPOINT='.length);
-  if (azureDeployment?.startsWith('AZURE_OPENAI_DEPLOYMENT_NAME=')) azureDeployment = azureDeployment.slice('AZURE_OPENAI_DEPLOYMENT_NAME='.length);
-  if (azureApiVersion?.startsWith('AZURE_OPENAI_API_VERSION=')) azureApiVersion = azureApiVersion.slice('AZURE_OPENAI_API_VERSION='.length);
-
-  // Validate all required environment variables
-  if (!azureKey || !azureEndpoint || !azureDeployment || !azureApiVersion) {
-    throw new Error('Missing required Azure OpenAI environment variables');
-  }
+  const {
+  AZURE_OPENAI_KEY,
+  AZURE_OPENAI_ENDPOINT,
+  AZURE_OPENAI_DEPLOYMENT_NAME,
+  AZURE_OPENAI_API_VERSION
+} = process.env;
 
   // Read prompt from file
   const promptPath = path.join(process.cwd(), 'prompts', 'generate_content.txt');
@@ -32,10 +21,10 @@ export default async function generateEducationalContent (topic, level) {
     .replace('{{TOPIC}}', topic)
     .replace('{{LEVEL}}', level);
 
-  const endpoint = `${azureEndpoint}openai/deployments/${azureDeployment}/chat/completions?api-version=${azureApiVersion}`;
+  const endpoint = `${AZURE_OPENAI_ENDPOINT}openai/deployments/${AZURE_OPENAI_DEPLOYMENT_NAME}/chat/completions?api-version=${AZURE_OPENAI_API_VERSION}`;
   const headers = {
     'Content-Type': 'application/json',
-    'api-key': azureKey,
+    'api-key': AZURE_OPENAI_KEY,
   };
 
   const body = {

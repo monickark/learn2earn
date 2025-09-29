@@ -32,7 +32,8 @@ export default function App() {
   useEffect(() => {
     (async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/session`, { credentials: 'include' });
+        const base = import.meta.env.VITE_API_URL || window.location.origin;
+        const res = await fetch(`${base}/api/auth/session`, { credentials: 'include' });
         const data = await res.json();
         const guest = localStorage.getItem("guest") === "true";
         if (data?.user) {
@@ -53,7 +54,8 @@ export default function App() {
 
   useEffect(() => {
     if (activeTab === "topic") {
-      fetch(`${import.meta.env.VITE_API_URL}/api/trending`)
+      const base = import.meta.env.VITE_API_URL || window.location.origin;
+      fetch(`${base}/api/trending`)
         .then((res) => res.json())
         .then((response) => setTrendingTopics(response?.data || []))
         .catch((err) => console.error("Trending fetch error", err));
@@ -69,7 +71,8 @@ export default function App() {
 
   const handleLogout = async () => {
     try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/auth/logout`, {
+      const base = import.meta.env.VITE_API_URL || window.location.origin;
+      await fetch(`${base}/api/auth/logout`, {
         method: 'POST',
         credentials: 'include'
       });

@@ -14,7 +14,8 @@ export default function useSummarizeArticle() {
   let finalText = (textContent || '').trim(); // now guaranteed string
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/summarize-article`, {
+      const base = import.meta.env.VITE_API_URL || window.location.origin;
+      const res = await fetch(`${base}/api/summarize-article`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ articleText: finalText }),

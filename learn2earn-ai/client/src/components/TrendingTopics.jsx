@@ -46,7 +46,7 @@ export default function TrendingTopics({ topics = [], onClick }) {
             className="flex-shrink-0 sm:flex-shrink min-w-[140px] sm:min-w-0"
           >
             <button
-              onClick={() => onClick(item.topic, "Beginner")}
+              onClick={() => onClick(item.topic)}
               className="group flex flex-col items-start justify-center px-3 py-2 rounded-md text-xs sm:text-sm text-gray-700 bg-gray-50 hover:bg-indigo-50 hover:text-indigo-600 transition-all duration-150 w-full break-words text-left"
             >
               <span className="break-words leading-snug">{item.topic}</span>

@@ -14,7 +14,8 @@ export default function useGenerateContent() {
     setTopic(newTopic);
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/generate-content`, {
+      const base = import.meta.env.VITE_API_URL || window.location.origin;
+      const res = await fetch(`${base}/api/generate-content`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ topic: newTopic, level: newLevel }),
