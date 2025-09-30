@@ -1,12 +1,31 @@
 // components/interview/Step3LearningTabs.jsx
 import { useEffect, useState } from "react";
 
+// Icons for tabs
+const TabIcons = {
+  overview: "📋",
+  topics: "🔍",
+  studyplan: "📅",
+  questions: "❓",
+  mistakes: "⚠️",
+  resources: "📚",
+  prep: "🎯"
+};
+
 function SingleSkillTabs({ skill }) {
   const [activeTab, setActiveTab] = useState("overview");
   const { topic, level, content } = skill;
 
   if (!content) {
-    return <p className="text-gray-500 text-center">No content available.</p>;
+    return (
+      <div className="flex items-center justify-center h-full">
+        <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200 shadow-sm">
+          <div className="text-4xl mb-3">📭</div>
+          <p className="text-gray-500 font-medium">No content available for this skill.</p>
+          <p className="text-gray-400 text-sm mt-2">Try selecting a different skill or round.</p>
+        </div>
+      </div>
+    );
   }
 
   const tabs = [
@@ -16,77 +35,98 @@ function SingleSkillTabs({ skill }) {
     { key: "questions", label: "Questions" },
     { key: "mistakes", label: "Mistakes to Avoid" },
     { key: "resources", label: "Resources" },
-    { key: "prep", label: "Prep before interview" },
+    { key: "prep", label: "Prep Guide" },
   ];
 
   return (
-    <div className="space-y-4 sm:space-y-6">
-      {/* Skill Title */}
-      <h2 className="text-lg sm:text-xl font-bold text-indigo-700">
-        {topic} ({level})
-      </h2>
+    <div className="h-full flex flex-col">
+      {/* Skill Title with Level Badge */}
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">
+          {topic}
+          <span className="ml-2 text-sm font-medium px-2.5 py-0.5 rounded-full bg-indigo-100 text-indigo-800">
+            {level}
+          </span>
+        </h2>
+      </div>
 
-      {/* Tabs */}
-      <div className="flex gap-1 sm:gap-2 md:gap-3 border-b pb-2 overflow-x-auto scrollbar-hide max-w-full">
+      {/* Modern Tab Navigation */}
+      <div className="bg-gray-50 rounded-xl p-1 flex gap-1 overflow-x-auto scrollbar-hide mb-6">
         {tabs.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
-            className={`px-2 sm:px-3 md:px-4 py-2 rounded-t-lg font-medium whitespace-nowrap text-xs sm:text-sm min-w-fit flex-shrink-0 max-w-[120px] sm:max-w-none ${
+            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg font-medium text-sm transition-all ${
               activeTab === tab.key
-                ? "bg-indigo-600 text-white shadow-sm"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                ? "bg-white text-indigo-700 shadow-sm border border-gray-200"
+                : "text-gray-600 hover:bg-gray-100"
             }`}
             title={tab.label}
           >
-            <span className="truncate block">{tab.label}</span>
+            <span>{TabIcons[tab.key]}</span>
+            <span className="truncate">{tab.label}</span>
           </button>
         ))}
       </div>
 
-      {/* Tab content */}
-      <div className="mt-4 sm:mt-6">
+      {/* Tab content with scroll container */}
+      <div className="flex-1 overflow-y-auto pr-2">
         {activeTab === "overview" && (
-          <div className="prose max-w-none text-sm sm:text-base">
-            <h3 className="text-base sm:text-lg font-bold mb-3">{content.Round}</h3>
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 className="text-lg font-bold text-indigo-700 mb-4">{content.Round}</h3>
             <p className="leading-relaxed text-gray-700">{content.Overview}</p>
           </div>
         )}
 
         {activeTab === "topics" && (
-          <div className="space-y-3">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Must-Know Topics:</h3>
-            <ul className="list-disc ml-4 sm:ml-6 space-y-2 text-gray-700 text-sm sm:text-base">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 className="text-lg font-bold text-indigo-700 mb-4">Must-Know Topics</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {content.MustKnowTopics?.map((t, i) => (
-                <li key={i} className="leading-relaxed">{t}</li>
+                <div key={i} className="p-3 bg-indigo-50 rounded-lg border border-indigo-100">
+                  <div className="flex items-start">
+                    <span className="text-indigo-600 mr-2 mt-0.5">•</span>
+                    <p className="text-gray-800">{t}</p>
+                  </div>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
 
         {activeTab === "studyplan" && (
-          <div className="space-y-3">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Study Plan:</h3>
-            <ol className="list-decimal ml-4 sm:ml-6 space-y-2 text-gray-700 text-sm sm:text-base">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 className="text-lg font-bold text-indigo-700 mb-4">Study Plan</h3>
+            <div className="space-y-3">
               {content.StudyPlan?.map((step, i) => (
-                <li key={i} className="leading-relaxed">{step}</li>
+                <div key={i} className="flex items-start">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center mr-3 mt-0.5">
+                    <span className="text-indigo-700 text-sm font-medium">{i + 1}</span>
+                  </div>
+                  <p className="text-gray-700">{step}</p>
+                </div>
               ))}
-            </ol>
+            </div>
           </div>
         )}
 
         {activeTab === "questions" && (
-          <div className="space-y-4 sm:space-y-6">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Interview Questions:</h3>
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold text-indigo-700 mb-4">Interview Questions</h3>
             {content.Questions?.map((q, i) => (
-              <div key={i} className="p-3 sm:p-4 border rounded-lg bg-gray-50 shadow-sm">
-                <p className="font-medium mb-2 text-sm sm:text-base text-gray-800">
-                  {i + 1}. {q.question}
-                </p>
-                <div className="mt-3 p-3 bg-green-50 border-l-4 border-green-400 rounded-r">
-                  <p className="text-green-800 text-xs sm:text-sm leading-relaxed">
-                    <span className="font-medium">Sample Answer:</span> {q.sampleAnswer}
-                  </p>
+              <div key={i} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100">
+                <div className="flex items-start">
+                  <div className="flex-shrink-0 h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center mr-3">
+                    <span className="text-indigo-700 text-sm font-medium">{i + 1}</span>
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-gray-800 mb-3">{q.question}</p>
+                    <div className="bg-green-50 rounded-lg p-4 border-l-4 border-green-400">
+                      <p className="text-green-800 text-sm">
+                        <span className="font-medium">Sample Answer:</span> {q.sampleAnswer}
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -94,33 +134,36 @@ function SingleSkillTabs({ skill }) {
         )}
 
         {activeTab === "mistakes" && (
-          <div className="space-y-3">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Mistakes to Avoid:</h3>
-            <ul className="list-disc ml-4 sm:ml-6 space-y-2 text-red-600 text-sm sm:text-base">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 className="text-lg font-bold text-indigo-700 mb-4">Mistakes to Avoid</h3>
+            <div className="space-y-3">
               {content.MistakesToAvoid?.map((m, i) => (
-                <li key={i} className="leading-relaxed">{m}</li>
+                <div key={i} className="flex items-start p-3 bg-red-50 rounded-lg border border-red-100">
+                  <span className="text-red-500 mr-2">⚠️</span>
+                  <p className="text-red-700">{m}</p>
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
         )}
 
         {activeTab === "resources" && (
-          <div className="space-y-3">
-            <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-3">Recommended Resources:</h3>
-            <ul className="list-disc ml-4 sm:ml-6 space-y-2 text-blue-700 text-sm sm:text-base">
+          <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+            <h3 className="text-lg font-bold text-indigo-700 mb-4">Recommended Resources</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {content.RecommendedResources?.map((r, i) => (
-                <li key={i} className="leading-relaxed">
-                  <a
-                    href={r.includes("http") ? r : "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hover:underline break-all text-blue-600 hover:text-blue-800"
-                  >
-                    {r}
-                  </a>
-                </li>
+                <a
+                  key={i}
+                  href={r.includes("http") ? r : "#"}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-3 bg-blue-50 rounded-lg border border-blue-100 hover:bg-blue-100 transition-colors flex items-start"
+                >
+                  <span className="text-blue-600 mr-2">🔗</span>
+                  <p className="text-blue-700 break-all">{r}</p>
+                </a>
               ))}
-            </ul>
+            </div>
           </div>
         )}
 
@@ -128,171 +171,90 @@ function SingleSkillTabs({ skill }) {
           <div className="space-y-6">
             {/* Pre-Interview Checklist */}
             {Array.isArray(content.PreInterviewChecklist) && content.PreInterviewChecklist.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Pre-Interview Checklist</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-bold text-indigo-700 mb-4">Pre-Interview Checklist</h3>
+                <div className="space-y-2">
                   {content.PreInterviewChecklist.map((item, i) => (
-                    <li key={i}>{item}</li>
+                    <div key={i} className="flex items-center">
+                      <input 
+                        type="checkbox" 
+                        id={`checklist-${i}`} 
+                        className="h-4 w-4 text-indigo-600 rounded border-gray-300 focus:ring-indigo-500"
+                      />
+                      <label htmlFor={`checklist-${i}`} className="ml-2 text-gray-700">{item}</label>
+                    </div>
                   ))}
-                </ul>
-              </section>
+                </div>
+              </div>
             )}
 
             {/* Study Plans */}
             {content.StudyPlans && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Study Plans</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div className="bg-white rounded-xl p-6 shadow-sm border border-gray-100">
+                <h3 className="text-lg font-bold text-indigo-700 mb-4">Study Plans</h3>
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {[
-                    { key: "Day30", label: "30-Day Plan" },
-                    { key: "Day14", label: "14-Day Plan" },
-                    { key: "Day7", label: "7-Day Plan" },
-                    { key: "Day2", label: "Last 2 Days" },
+                    { key: "Day30", label: "30-Day Plan", icon: "📆" },
+                    { key: "Day14", label: "14-Day Plan", icon: "📅" },
+                    { key: "Day7", label: "7-Day Plan", icon: "🗓️" },
+                    { key: "Day2", label: "Last 2 Days", icon: "⏰" },
                   ].map((p) => (
-                    <div key={p.key} className="p-3 border rounded-lg bg-gray-50">
-                      <h4 className="font-medium text-gray-800 mb-2 text-sm">{p.label}</h4>
-                      <ol className="list-decimal ml-4 space-y-1 text-gray-700 text-sm">
-                        {Array.isArray(content.StudyPlans?.[p.key]) && content.StudyPlans[p.key].map((step, i) => (
-                          <li key={i}>{step}</li>
-                        ))}
-                      </ol>
+                    <div key={p.key} className="bg-indigo-50 rounded-lg border border-indigo-100 overflow-hidden">
+                      <div className="bg-indigo-600 text-white px-4 py-2 flex items-center">
+                        <span className="mr-2">{p.icon}</span>
+                        <h4 className="font-medium">{p.label}</h4>
+                      </div>
+                      <div className="p-4">
+                        <ol className="list-decimal ml-4 space-y-2 text-gray-700">
+                          {Array.isArray(content.StudyPlans?.[p.key]) && content.StudyPlans[p.key].map((step, i) => (
+                            <li key={i}>{step}</li>
+                          ))}
+                        </ol>
+                      </div>
                     </div>
                   ))}
                 </div>
-              </section>
+              </div>
             )}
 
-            {/* Behavioral Stories Guide */}
-            {Array.isArray(content.BehavioralStoriesGuide) && content.BehavioralStoriesGuide.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Behavioral Stories Guide</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.BehavioralStoriesGuide.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Clarifying Questions */}
-            {Array.isArray(content.ClarifyingQuestions) && content.ClarifyingQuestions.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Clarifying Questions</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.ClarifyingQuestions.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Ask the Interviewer */}
-            {Array.isArray(content.AskInterviewer) && content.AskInterviewer.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Ask the Interviewer</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.AskInterviewer.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* System Design Templates */}
-            {Array.isArray(content.SystemDesignTemplates) && content.SystemDesignTemplates.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">System Design Templates</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.SystemDesignTemplates.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Coding Warm-ups */}
-            {Array.isArray(content.CodingWarmups) && content.CodingWarmups.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Coding Warm-ups</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.CodingWarmups.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Role-specific Cheat Sheets */}
-            {Array.isArray(content.RoleSpecificCheatSheets) && content.RoleSpecificCheatSheets.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Role-Specific Cheat Sheets</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.RoleSpecificCheatSheets.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Company Research Template */}
-            {Array.isArray(content.CompanyResearchTemplate) && content.CompanyResearchTemplate.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Company Research Template</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.CompanyResearchTemplate.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Negotiation Prep */}
-            {Array.isArray(content.NegotiationPrep) && content.NegotiationPrep.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Negotiation Prep</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.NegotiationPrep.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Day-of Tips */}
-            {Array.isArray(content.DayOfTips) && content.DayOfTips.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Day-of Tips</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.DayOfTips.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Self-Assessment Rubric */}
-            {Array.isArray(content.SelfAssessmentRubric) && content.SelfAssessmentRubric.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Self-Assessment Rubric</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.SelfAssessmentRubric.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {/* Last 48 Hours Plan */}
-            {Array.isArray(content.Last48HoursPlan) && content.Last48HoursPlan.length > 0 && (
-              <section>
-                <h3 className="text-sm sm:text-base font-semibold text-gray-800 mb-2">Last 48 Hours Plan</h3>
-                <ul className="list-disc ml-4 sm:ml-6 space-y-1 text-gray-700 text-sm sm:text-base">
-                  {content.Last48HoursPlan.map((item, i) => (
-                    <li key={i}>{item}</li>
-                  ))}
-                </ul>
-              </section>
-            )}
+            {/* Other prep sections in accordion style */}
+            {[
+              { key: "BehavioralStoriesGuide", title: "Behavioral Stories Guide", icon: "📝" },
+              { key: "ClarifyingQuestions", title: "Clarifying Questions", icon: "🤔" },
+              { key: "AskInterviewer", title: "Ask the Interviewer", icon: "💬" },
+              { key: "SystemDesignTemplates", title: "System Design Templates", icon: "🏗️" },
+              { key: "CodingWarmups", title: "Coding Warm-ups", icon: "💻" },
+              { key: "RoleSpecificCheatSheets", title: "Role-Specific Cheat Sheets", icon: "📋" },
+              { key: "CompanyResearchTemplate", title: "Company Research Template", icon: "🔍" },
+              { key: "NegotiationPrep", title: "Negotiation Prep", icon: "🤝" },
+              { key: "DayOfTips", title: "Day-of Tips", icon: "🌟" },
+              { key: "SelfAssessmentRubric", title: "Self-Assessment Rubric", icon: "✅" },
+              { key: "Last48HoursPlan", title: "Last 48 Hours Plan", icon: "⏱️" },
+            ].map(({ key, title, icon }) => {
+              const items = content[key];
+              if (!Array.isArray(items) || items.length === 0) return null;
+              
+              return (
+                <details key={key} className="bg-white rounded-xl shadow-sm border border-gray-100 group">
+                  <summary className="flex items-center justify-between p-4 cursor-pointer list-none">
+                    <div className="flex items-center">
+                      <span className="mr-3">{icon}</span>
+                      <h3 className="font-medium text-gray-800">{title}</h3>
+                    </div>
+                    <svg className="w-5 h-5 text-gray-500 transition-transform group-open:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </summary>
+                  <div className="p-4 pt-0 border-t">
+                    <ul className="list-disc ml-5 space-y-1 text-gray-700">
+                      {items.map((item, i) => (
+                        <li key={i}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </details>
+              );
+            })}
           </div>
         )}
       </div>
@@ -312,7 +274,15 @@ export default function Step3LearningTabs({ formData = {}, selectedRounds = [], 
   }, [learningContent]);
 
   if (!learningContent || !learningContent.length) {
-    return <p className="text-gray-500 text-center">No content available.</p>;
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center p-8 bg-gray-50 rounded-xl border border-gray-200 shadow-sm">
+          <div className="text-4xl mb-3">📭</div>
+          <p className="text-gray-500 font-medium">No content available.</p>
+          <p className="text-gray-400 text-sm mt-2">Please go back and select different interview rounds.</p>
+        </div>
+      </div>
+    );
   }
 
   const skillsArray = (formData?.skills || "")
@@ -321,41 +291,58 @@ export default function Step3LearningTabs({ formData = {}, selectedRounds = [], 
     .filter(Boolean);
 
   return (
-    <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 px-4 no-overflow">
-      {/* Step Header */}
-      <div className="flex items-center gap-3">
-        <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-indigo-100 flex items-center justify-center">
-          <span className="text-indigo-700 text-base sm:text-lg">📘</span>
+    <div className="max-w-7xl mx-auto space-y-6 sm:space-y-8 px-4">
+      {/* Step Header with Progress Indicator */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-indigo-100 flex items-center justify-center">
+            <span className="text-indigo-700 text-xl">📘</span>
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-indigo-600 text-white text-xs font-medium">3</span>
+              <p className="text-sm text-indigo-600 font-medium">STEP 3 OF 3</p>
+            </div>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
+              Learning Content for {selectedRounds?.[0]?.roundName || "Selected Round"}
+            </h2>
+          </div>
         </div>
-        <h2 className="text-lg sm:text-2xl md:text-3xl font-extrabold tracking-tight text-gray-900">
-          Step 3: Learning Content for {selectedRounds?.[0]?.roundName || "Selected Round"}
-        </h2>
+        
+        {/* Round Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-indigo-50 border border-indigo-100">
+          <span className="text-indigo-600">🎯</span>
+          <span className="font-medium text-indigo-700">{selectedRounds?.[0]?.roundName || "Selected Round"}</span>
+        </div>
       </div>
 
-      {/* Job Information Card (same style as Step 2) */}
-      <div className="overflow-hidden rounded-2xl border border-gray-200 shadow-sm bg-white">
-        <div className="bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600 p-4 sm:p-5">
-          <div className="flex flex-wrap items-center justify-between gap-3 sm:gap-4">
-            <div className="flex items-center gap-2 sm:gap-3">
-              <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-white/15 flex items-center justify-center">
-                <span className="text-white text-base sm:text-lg">🧾</span>
-              </div>
-              <div>
-                <p className="text-white/80 text-xs uppercase tracking-wider">
-                  Job Information
-                </p>
-                <h3 className="text-white text-base sm:text-lg font-semibold">
-                  {formData?.jobTitle || "—"}
-                </h3>
-              </div>
+      {/* Job Information Card - Collapsible */}
+      <details className="group rounded-2xl border border-gray-200 shadow-sm bg-white overflow-hidden">
+        <summary className="flex items-center justify-between p-4 sm:p-5 cursor-pointer list-none bg-gradient-to-r from-indigo-600 via-violet-600 to-fuchsia-600">
+          <div className="flex items-center gap-3">
+            <div className="h-10 w-10 rounded-xl bg-white/15 flex items-center justify-center">
+              <span className="text-white text-lg">🧾</span>
             </div>
+            <div>
+              <p className="text-white/80 text-xs uppercase tracking-wider">
+                Job Information
+              </p>
+              <h3 className="text-white text-lg font-semibold">
+                {formData?.jobTitle || "—"}
+              </h3>
+            </div>
+          </div>
+          <div className="flex items-center gap-3">
             {formData?.yearsExperience && (
-              <span className="inline-flex items-center gap-2 text-white/90 text-xs sm:text-sm bg-white/10 border border-white/20 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full">
+              <span className="inline-flex items-center gap-2 text-white/90 text-sm bg-white/10 border border-white/20 px-3 py-1.5 rounded-full">
                 ⏳ {formData.yearsExperience} yrs exp
               </span>
             )}
+            <svg className="w-5 h-5 text-white transition-transform group-open:rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </div>
-        </div>
+        </summary>
 
         {/* Body */}
         <div className="p-4 sm:p-6 space-y-4">
@@ -365,11 +352,11 @@ export default function Step3LearningTabs({ formData = {}, selectedRounds = [], 
             <div className="w-full">
               <p className="text-xs uppercase text-gray-500 tracking-wider">Skills</p>
               {skillsArray.length > 0 ? (
-                <div className="flex flex-wrap gap-1 sm:gap-2 mt-1">
+                <div className="flex flex-wrap gap-2 mt-2">
                   {skillsArray.map((skill, i) => (
                     <span
                       key={`${skill}-${i}`}
-                      className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-2 sm:px-2.5 py-1 text-xs font-medium text-indigo-700"
+                      className="inline-flex items-center rounded-full border border-indigo-200 bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700"
                     >
                       {skill}
                     </span>
@@ -387,57 +374,77 @@ export default function Step3LearningTabs({ formData = {}, selectedRounds = [], 
               <span className="text-indigo-600 mt-0.5">📝</span>
               <div>
                 <p className="text-xs uppercase text-gray-500 tracking-wider">Job Description</p>
-                <p className="mt-1 text-gray-700 leading-relaxed text-sm sm:text-base">
+                <p className="mt-2 text-gray-700 leading-relaxed">
                   {formData.jobDescription}
                 </p>
               </div>
             </div>
           )}
         </div>
-      </div>
+      </details>
 
-      {/* Main Layout */}
-      <div className="flex flex-col lg:flex-row h-[50vh] sm:h-[60vh] lg:h-[70vh] border rounded-lg overflow-hidden shadow">
-        {/* Mobile Skills Selector */}
-        <div className="lg:hidden bg-gray-50 border-b p-3 sm:p-4">
-          <h2 className="font-bold text-indigo-700 mb-3 text-sm">Select Skill:</h2>
-          <select
-            value={selectedSkillIndex}
-            onChange={(e) => setSelectedSkillIndex(parseInt(e.target.value))}
-            className="w-full p-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-indigo-400"
-          >
+      {/* Main Content Area with Card Design */}
+      <div className="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden">
+        {/* Mobile Skills Selector - Redesigned as Pills */}
+        <div className="lg:hidden p-4 bg-gray-50 border-b">
+          <h2 className="font-bold text-gray-700 mb-3">Select Skill:</h2>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {learningContent.map((skill, idx) => (
-              <option key={idx} value={idx}>
+              <button
+                key={idx}
+                onClick={() => setSelectedSkillIndex(idx)}
+                className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                  selectedSkillIndex === idx
+                    ? "bg-indigo-600 text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
+              >
                 {skill.topic}
-              </option>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
-        {/* Desktop Sidebar */}
-        <div className="hidden lg:block w-48 xl:w-64 bg-gray-50 border-r overflow-y-auto">
-          <h2 className="px-3 xl:px-4 py-3 font-bold text-indigo-700 border-b text-sm">Skills</h2>
-          <ul className="space-y-1">
-            {learningContent.map((skill, idx) => (
-              <li key={idx}>
-                <button
-                  onClick={() => setSelectedSkillIndex(idx)}
-                  className={`w-full text-left px-3 xl:px-4 py-2 block transition-colors text-xs xl:text-sm ${
-                    selectedSkillIndex === idx
-                      ? "bg-indigo-600 text-white font-medium rounded-r-full"
-                      : "hover:bg-gray-100 text-gray-700"
-                  }`}
-                >
-                  <span className="truncate block">{skill.topic}</span>
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+        {/* Main Content Layout */}
+        <div className="flex flex-col lg:flex-row h-[60vh] sm:h-[65vh] lg:h-[70vh]">
+          {/* Desktop Sidebar - Redesigned with Icons */}
+          <div className="hidden lg:block w-56 xl:w-64 bg-gray-50 border-r overflow-y-auto">
+            <div className="p-4 border-b">
+              <h2 className="font-bold text-gray-700 flex items-center gap-2">
+                <span className="text-indigo-600">🧠</span>
+                <span>Skills</span>
+              </h2>
+            </div>
+            <ul className="p-2">
+              {learningContent.map((skill, idx) => (
+                <li key={idx} className="mb-1">
+                  <button
+                    onClick={() => setSelectedSkillIndex(idx)}
+                    className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
+                      selectedSkillIndex === idx
+                        ? "bg-indigo-100 text-indigo-800 font-medium"
+                        : "hover:bg-gray-100 text-gray-700"
+                    }`}
+                  >
+                    <div className="flex items-center">
+                      <span className={`w-2 h-2 rounded-full ${selectedSkillIndex === idx ? 'bg-indigo-600' : 'bg-gray-300'} mr-2`}></span>
+                      <span>{skill.topic}</span>
+                    </div>
+                    {skill.level && (
+                      <span className="block text-xs text-gray-500 mt-1 ml-4">{skill.level}</span>
+                    )}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
 
-        {/* Content */}
-        <div className="flex-1 p-3 sm:p-4 lg:p-6 overflow-y-auto bg-white">
-          <SingleSkillTabs skill={learningContent[selectedSkillIndex]} />
+          {/* Content Area */}
+          <div className="flex-1 overflow-hidden">
+            <div className="h-full p-4 lg:p-6 overflow-y-auto">
+              <SingleSkillTabs skill={learningContent[selectedSkillIndex]} />
+            </div>
+          </div>
         </div>
       </div>
     </div>
