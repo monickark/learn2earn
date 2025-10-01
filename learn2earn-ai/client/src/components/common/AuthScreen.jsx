@@ -71,6 +71,7 @@ export default function AuthScreen({ onAuthenticated }) {
       const demoPassword = import.meta.env.VITE_DEMO_PASSWORD;
       if (!demoEmail || !demoPassword) {
         localStorage.setItem('guest', 'true');
+        localStorage.setItem('demo', 'true');
         onAuthenticated({ guest: true, demo: true });
         return;
       }
@@ -83,18 +84,30 @@ export default function AuthScreen({ onAuthenticated }) {
         credentials: 'include',
         body: JSON.stringify({ email: demoEmail, password: demoPassword })
       });
+      let data;
       if (!res.ok) {
         const signupUrl = `${base.replace(/\/$/, '')}/api/auth/signup`;
-        await fetch(signupUrl, {
+        res = await fetch(signupUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           credentials: 'include',
           body: JSON.stringify({ email: demoEmail, password: demoPassword })
         });
+        const text = await res.text();
+        try { data = JSON.parse(text); } catch { throw new Error('Failed to reach auth service'); }
+        if (!res.ok) throw new Error(data?.error || 'Demo signup failed');
+      } else {
+        const text = await res.text();
+        try { data = JSON.parse(text); } catch { throw new Error('Failed to reach auth service'); }
       }
-      onAuthenticated({ email: demoEmail, demo: true });
+      localStorage.removeItem('guest');
+      localStorage.setItem('demo', 'true');
+      onAuthenticated(data.user);
     } catch (err) {
       setError(err.message || 'Demo login failed');
+      localStorage.setItem('guest', 'true');
+      localStorage.setItem('demo', 'true');
+      onAuthenticated({ guest: true, demo: true });
     } finally {
       setLoading(false);
     }

@@ -15,21 +15,41 @@ export default function useInterviewLearning() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // ✅ Restore saved state on page reload
+  // ✅ Clear saved state on mount and check for demo user
   useEffect(() => {
-    const savedState = localStorage.getItem("interviewLearningState");
-    if (savedState) {
+    localStorage.removeItem("interviewLearningState");
+    
+    // Check if user is a demo user and populate form data
+    const checkDemoUser = async () => {
       try {
-        const parsed = JSON.parse(savedState);
-        setStep(parsed.step || 1);
-        setFormData(parsed.formData || {});
-        setRounds(parsed.rounds || []);
-        setSelectedRounds(parsed.selectedRounds || []);
-        setLearningContent(parsed.learningContent || []);
-      } catch (e) {
-        console.error("Failed to parse saved interview state", e);
+        const base = import.meta.env.VITE_API_URL || window.location.origin;
+        const url = `${base.replace(/\/$/, '')}/api/auth/session`;
+        const res = await fetch(url, { credentials: 'include' });
+        const data = await res.json();
+        
+        if (data?.user?.demo || localStorage.getItem('demo') === 'true') {
+          // Populate with sample data for demo users
+          setFormData({
+            jobTitle: "Frontend Engineer",
+            jobDescription: "We are looking for a Frontend Engineer experienced with React, TypeScript, state management, performance optimization, and accessibility. Familiarity with REST APIs, testing frameworks, and CI/CD is a plus.",
+            yearsExperience: "4-6",
+            skills: "React, TypeScript, JavaScript, Web Performance, Accessibility, CSS, Testing"
+          });
+        }
+      } catch (error) {
+        // If session check fails, fallback to localStorage
+        if (localStorage.getItem('demo') === 'true') {
+          setFormData({
+            jobTitle: "Frontend Engineer",
+            jobDescription: "We are looking for a Frontend Engineer experienced with React, TypeScript, state management, performance optimization, and accessibility. Familiarity with REST APIs, testing frameworks, and CI/CD is a plus.",
+            yearsExperience: "4-6",
+            skills: "React, TypeScript, JavaScript, Web Performance, Accessibility, CSS, Testing"
+          });
+        }
       }
-    }
+    };
+
+    checkDemoUser();
   }, []);
 
   // ✅ Save state whenever it changes

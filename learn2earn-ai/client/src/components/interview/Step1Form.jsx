@@ -9,8 +9,13 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
   };
 
   const applySample = () => {
-    setFormData({ ...formData, ...sampleData });
+    // Ensure we're setting all required fields
+    setFormData(prevData => ({
+      ...prevData,
+      ...sampleData
+    }));
   };
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-4 sm:p-6 max-w-2xl mx-auto">
       <div className="flex items-start justify-between mb-4">
@@ -34,9 +39,9 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
             type="text"
             placeholder="Job Title"
             className="w-full border p-3 rounded placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            value={formData.jobTitle}
+            value={formData.jobTitle || ""}
             onChange={(e) =>
-              setFormData({ ...formData, jobTitle: e.target.value })
+              setFormData(prev => ({ ...prev, jobTitle: e.target.value }))
             }
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -50,9 +55,9 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
             placeholder="Job description"
             className="w-full border p-3 rounded placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400 resize-y"
             rows="3"
-            value={formData.jobDescription}
+            value={formData.jobDescription || ""}
             onChange={(e) =>
-              setFormData({ ...formData, jobDescription: e.target.value })
+              setFormData(prev => ({ ...prev, jobDescription: e.target.value }))
             }
           />
           <p className="text-xs text-gray-500 mt-1">
@@ -64,9 +69,9 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
         <div>
           <select
             className="w-full border p-3 rounded text-gray-700 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            value={formData.yearsExperience}
+            value={formData.yearsExperience || ""}
             onChange={(e) =>
-              setFormData({ ...formData, yearsExperience: e.target.value })
+              setFormData(prev => ({ ...prev, yearsExperience: e.target.value }))
             }
           >
             <option value="">Select Years of Experience</option>
@@ -84,9 +89,9 @@ export default function Step1Form({ formData, setFormData, onSubmit, loading }) 
             type="text"
             placeholder="Skills "
             className="w-full border p-3 rounded placeholder-gray-400 text-sm sm:text-base focus:outline-none focus:ring-2 focus:ring-indigo-400"
-            value={formData.skills}
+            value={formData.skills || ""}
             onChange={(e) =>
-              setFormData({ ...formData, skills: e.target.value })
+              setFormData(prev => ({ ...prev, skills: e.target.value }))
             }
           />
           <p className="text-xs text-gray-500 mt-1">

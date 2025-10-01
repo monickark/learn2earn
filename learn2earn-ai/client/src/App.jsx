@@ -36,16 +36,29 @@ export default function App() {
         const res = await fetch(`${base}/api/auth/session`, { credentials: 'include' });
         const data = await res.json();
         const guest = localStorage.getItem("guest") === "true";
+        const demo = localStorage.getItem("demo") === "true";
         if (data?.user) {
-          setUser(data.user);
+          setUser({
+            ...data.user,
+            demo: data.user.demo || demo
+          });
         } else if (guest) {
-          setUser({ guest: true });
+          setUser({ 
+            guest: true,
+            demo: demo
+          });
         } else {
           setUser(null);
         }
       } catch (e) {
         const guest = localStorage.getItem("guest") === "true";
-        if (guest) setUser({ guest: true });
+        const demo = localStorage.getItem("demo") === "true";
+        if (guest) {
+          setUser({ 
+            guest: true,
+            demo: demo
+          });
+        }
       } finally {
         setUserChecked(true);
       }

@@ -21,6 +21,10 @@ router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body || {};
     if (!email || !password) return res.status(400).json({ error: 'Missing credentials' });
+    
+    // Check if this is a demo login
+    const isDemo = email === process.env.VITE_DEMO_EMAIL;
+    
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) return res.status(401).json({ error: error.message });
     // Ensure profile row exists
@@ -31,8 +35,21 @@ router.post('/login', async (req, res) => {
         .from('profiles')
         .upsert({ id: data.user.id, email: data.user.email, avatar_url: defaultAvatar }, { onConflict: 'id' });
     } catch {}
-    setSessionCookie(res, { uid: data.user.id, email: data.user.email });
-    return res.json({ user: { id: data.user.id, email: data.user.email } });
+    
+    // Include demo flag in session if it's a demo user
+    setSessionCookie(res, { 
+      uid: data.user.id, 
+      email: data.user.email,
+      demo: isDemo 
+    });
+    
+    return res.json({ 
+      user: { 
+        id: data.user.id, 
+        email: data.user.email,
+        demo: isDemo 
+      } 
+    });
   } catch (e) {
     return res.status(500).json({ error: 'Login failed' });
   }
@@ -42,6 +59,10 @@ router.post('/signup', async (req, res) => {
   try {
     const { email, password, name } = req.body || {};
     if (!email || !password) return res.status(400).json({ error: 'Missing credentials' });
+    
+    // Check if this is a demo signup
+    const isDemo = email === process.env.VITE_DEMO_EMAIL;
+    
     const emailRedirectTo = process.env.EMAIL_REDIRECT_TO || process.env.SITE_URL || 'http://localhost:5173';
     const { data, error } = await supabase.auth.signUp({ 
       email, 
@@ -67,7 +88,24 @@ router.post('/signup', async (req, res) => {
     } catch (e) {
       console.error('profiles upsert after signup exception:', e.message);
     }
-    // no session cookie until email verified
+    
+    // For demo users, set session immediately without email verification
+    if (isDemo) {
+      setSessionCookie(res, { 
+        uid: data.user.id, 
+        email: data.user.email,
+        demo: true 
+      });
+      return res.json({ 
+        user: { 
+          id: data.user.id, 
+          email: data.user.email,
+          demo: true 
+        } 
+      });
+    }
+    
+    // Regular users need email verification
     return res.json({ requiresVerification: true });
   } catch (e) {
     return res.status(500).json({ error: 'Signup failed' });
